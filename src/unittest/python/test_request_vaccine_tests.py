@@ -24,7 +24,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as cm:
             value = my_request.request_vaccination_id("zbb5dbd6f-d8b4-113f-8eb9-dd262cfc54e0", "Regular",
                                                       "José Johnson", "923412921", "45")
-        self.assertEqual("Error: not a UUID", cm.exception.message)
+        self.assertEqual("Error: invalid UUID", cm.exception.message)
 
     def test4_request_vaccination_notok_uuid2(self):
         my_request = VaccineManager()
@@ -287,6 +287,13 @@ class MyTestCase(unittest.TestCase):
                                                   "Rosa García", "678923456", "34")
         self.assertEqual("RELLENAR", value)
 
+    def test37_request_vaccination_notok_uuid4(self):
+        my_request = VaccineManager()
+
+        with self.assertRaises(VaccineManagementException) as cm:
+            value = my_request.request_vaccination_id(None, "Regular",
+                                                      "José Johnson", "923412921", "45")
+        self.assertEqual("Error: please enter a UUID", cm.exception.message)
 
 
 
