@@ -118,7 +118,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as cm:
             value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
                                                           "Juan Nepomuceno96", "923412921", "45")
-        self.assertEqual("Error: name cannot contain numbers", cm.exception.message)
+        self.assertEqual("Error: name must have two words, separated by a space and contain no digits", cm.exception.message)
 
     def test16_request_vaccination_notok_name2(self):
         my_request = VaccineManager()
@@ -126,7 +126,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as cm:
             value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
                                                           "198Juan Nepomuceno", "923412921", "45")
-        self.assertEqual("Error: name cannot contain numbers", cm.exception.message)
+        self.assertEqual("Error: name must have two words, separated by a space and contain no digits", cm.exception.message)
 
     def test17_request_vaccination_notok_name3(self):
         my_request = VaccineManager()
@@ -134,7 +134,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as cm:
             value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
                                                           "Feliciano", "923412921", "45")
-        self.assertEqual("Error: name must have two words", cm.exception.message)
+        self.assertEqual("Error: name must have two words, separated by a space and contain no digits", cm.exception.message)
 
     def test18_request_vaccination_notok_name4(self):
         my_request = VaccineManager()
@@ -142,7 +142,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as cm:
             value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
                                                           "Pepe González de la Santa Sal", "923412921", "45")
-        self.assertEqual("Error: name must have two words", cm.exception.message)
+        self.assertEqual("Error: name must have two words, separated by a space and contain no digits", cm.exception.message)
 
     def test19_request_vaccination_notok_name4(self):
         my_request = VaccineManager()
@@ -150,7 +150,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as cm:
             value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
                                                           "Nombre muy Incorrecto", "923412921", "45")
-        self.assertEqual("Error: name must have two words", cm.exception.message)
+        self.assertEqual("Error: name must have two words, separated by a space and contain no digits", cm.exception.message)
 
     def test20_request_vaccination_notok_name5(self):
         my_request = VaccineManager()
@@ -295,7 +295,13 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "923412921", "45")
         self.assertEqual("Error: please enter a UUID", cm.exception.message)
 
+    def test38_request_vaccination_notok_name6(self):
+        my_request = VaccineManager()
 
+        with self.assertRaises(VaccineManagementException) as cm:
+            value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
+                                                          None, "923412921", "45")
+        self.assertEqual("Error: name can't be null", cm.exception.message)
 
 
 
