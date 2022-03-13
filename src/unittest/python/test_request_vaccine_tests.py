@@ -128,7 +128,7 @@ class MyTestCase(unittest.TestCase):
                                                           "198Juan Nepomuceno", "923412921", "45")
         self.assertEqual("Error: name cannot contain numbers", cm.exception.message)
 
-    def test16_request_vaccination_notok_name3(self):
+    def test17_request_vaccination_notok_name3(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -136,7 +136,7 @@ class MyTestCase(unittest.TestCase):
                                                           "Feliciano", "923412921", "45")
         self.assertEqual("Error: name must have two words", cm.exception.message)
 
-    def test17_request_vaccination_notok_name4(self):
+    def test18_request_vaccination_notok_name4(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -144,7 +144,7 @@ class MyTestCase(unittest.TestCase):
                                                           "Pepe González de la Santa Sal", "923412921", "45")
         self.assertEqual("Error: name must have two words", cm.exception.message)
 
-    def test18_request_vaccination_notok_name4(self):
+    def test19_request_vaccination_notok_name4(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -152,7 +152,7 @@ class MyTestCase(unittest.TestCase):
                                                           "Nombre muy Incorrecto", "923412921", "45")
         self.assertEqual("Error: name must have two words", cm.exception.message)
 
-    def test19_request_vaccination_notok_name5(self):
+    def test20_request_vaccination_notok_name5(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -160,7 +160,7 @@ class MyTestCase(unittest.TestCase):
                                                           2341231, "923412921", "45")
         self.assertEqual("Error: name must be a string", cm.exception.message)
 
-    def test20_request_vaccination_notok_number1(self):
+    def test21_request_vaccination_notok_number1(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -168,7 +168,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "99123", "45")
         self.assertEqual("Error: number must contain 9 characters", cm.exception.message)
 
-    def test21_request_vaccination_notok_number1(self):
+    def test22_request_vaccination_notok_number1(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -176,7 +176,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "0", "45")
         self.assertEqual("Error: number must contain 9 characters", cm.exception.message)
 
-    def test22_request_vaccination_notok_number1(self):
+    def test23_request_vaccination_notok_number1(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -184,7 +184,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "", "45")
         self.assertEqual("Error: number must contain 9 characters", cm.exception.message)
 
-    def test23_request_vaccination_notok_number2(self):
+    def test24_request_vaccination_notok_number2(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -192,7 +192,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "23424534324", "45")
         self.assertEqual("Error: number must contain 9 characters", cm.exception.message)
 
-    def test24_request_vaccination_notok_number3(self):
+    def test25_request_vaccination_notok_number3(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -200,7 +200,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "Esteesminumero", "45")
         self.assertEqual("Error: number string must only contain numerals", cm.exception.message)
 
-    def test25_request_vaccination_notok_number3(self):
+    def test26_request_vaccination_notok_number3(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -208,7 +208,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "234num2323", "45")
         self.assertEqual("Error: number must contain 9 characters", cm.exception.message)
 
-    def test26_request_vaccination_notok_number4(self):
+    def test27_request_vaccination_notok_number4(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -216,7 +216,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", None, "45")
         self.assertEqual("Error: number must contain 9 characters", cm.exception.message)
 
-    def test27_request_vaccination_notok_number5(self):
+    def test28_request_vaccination_notok_number5(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -224,7 +224,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", 24.67, "45")
         self.assertEqual("Error: number must be a string", cm.exception.message)
 
-    def test28_request_vaccination_notok_age1(self):
+    def test29_request_vaccination_notok_age1(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -232,7 +232,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "685838390", "5")
         self.assertEqual("Error: age must be between 6 and 125", cm.exception.message)
 
-    def test29_request_vaccination_notok_age1(self):
+    def test30_request_vaccination_notok_age1(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -240,7 +240,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "685838390", "-3241")
         self.assertEqual("Error: age must be between 6 and 125", cm.exception.message)
 
-    def test30_request_vaccination_notok_age2(self):
+    def test31_request_vaccination_notok_age2(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -248,7 +248,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "685838390", "126")
         self.assertEqual("Error: age must be between 6 and 125", cm.exception.message)
 
-    def test30_request_vaccination_notok_age2(self):
+    def test32_request_vaccination_notok_age2(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -256,7 +256,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "685838390", "9999")
         self.assertEqual("Error: age must be between 6 and 125", cm.exception.message)
 
-    def test30_request_vaccination_notok_age2(self):
+    def test33_request_vaccination_notok_age2(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -264,7 +264,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "685838390", "64.35")
         self.assertEqual("Error: age can't have decimals", cm.exception.message)
 
-    def test31_request_vaccination_notok_age2(self):
+    def test34_request_vaccination_notok_age2(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -272,7 +272,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "685838390", "32.00")
         self.assertEqual("Error: age can't have decimals", cm.exception.message)
 
-    def test32_request_vaccination_notok_age3(self):
+    def test35_request_vaccination_notok_age3(self):
         my_request = VaccineManager()
 
         with self.assertRaises(VaccineManagementException) as cm:
@@ -280,7 +280,7 @@ class MyTestCase(unittest.TestCase):
                                                       "José Johnson", "685838390", "stringnum")
         self.assertEqual("Error: age must only contain numerals", cm.exception.message)
 
-    def test33_request_vaccination_ok(self):
+    def test36_request_vaccination_ok(self):
         my_request = VaccineManager()
 
         value = my_request.request_vaccination_id("cb3dd087-0868-4203-bbbd-5e7899fbbe2a", "Regular",
