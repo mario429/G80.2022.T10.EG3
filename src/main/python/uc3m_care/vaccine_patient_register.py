@@ -65,3 +65,5 @@ class VaccinePatientRegister:
     def patient_age( self ):
         """Returns the patient's age"""
         return self.__age
+
+    
