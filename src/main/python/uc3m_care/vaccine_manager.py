@@ -10,23 +10,29 @@ class VaccineManager:
     @staticmethod
     def validate_guid(patient_id):
         """RETURN TRUE IF THE GUID v4 IS RIGHT, OR FALSE IN OTHER CASE"""
-        try:
-            my_r = re.compile (r'^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-'
-                               r'[0-9A-F]{12}$', re.IGNORECASE)
-            this_r = my_r.fullmatch(patient_id)
-            if not this_r:
-                raise VaccineManagementException("Error: invalid UUID version")
-        except ValueError:
+
+        valid_guid = re.compile (r'^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-'
+                                 r'[0-9A-F]{12}$', re.IGNORECASE)
+        valid_guid4 = re.compile(r'^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-'
+                          r'[0-9A-F]{12}$', re.IGNORECASE)
+
+        check_guid = valid_guid.fullmatch(patient_id)
+        check_guid_version = valid_guid4.fullmatch(patient_id)
+
+        if not check_guid:
             raise VaccineManagementException("Error: invalid UUID")
+        if not check_guid_version:
+            raise VaccineManagementException("Error: invalid UUID version")
         return True
 
     def request_vaccination_id (self, patient_id, registration_type, name_surname, phone_number, age):
+
         #Primero manejamos los errores con patient_id
         if not patient_id:
             raise VaccineManagementException ("Error: please enter a UUID")
         if (type(patient_id) != str):
             raise VaccineManagementException ("Error: UUID must be a string")
-        self.validate_guid(patient_id) #Se encarga de ver si patient_id es un UUID v4 válido
+        self.validate_guid(patient_id) #Se encarga de ver si patient_id es un UUID v4 válido. Si no hay errores, continúa la ejecución
 
         #Errores con registration_type
 
@@ -46,11 +52,15 @@ class VaccineManager:
         if len(name_surname) > 30:
             raise VaccineManagementException("Error: name is too long")
 
-        test_arr = name_surname.split()
-
-        if len(test_arr) != 2:
+        #Comprobamos si cumple la regex con dos palabras separadas por un espacio
+        good_name = re.compile(r'\w+\s\w+')
+        test_name = good_name.fullmatch(name_surname)
+        if not test_name:
             raise VaccineManagementException("Error: name must have two words, separated by a space and contain no digits")
-        acceptable=["á", "é", "í", "ó", "ú", "ñ", "ç"]
+
+        acceptable=["á", "é", "í", "ó", "ú", "ñ", "ç", "Á", "É", "Í", "Ó", "Ú", "ü"]
+
+        #Comprobamos si hay caracteres no válidos
         for i in name_surname:
             if not i.isalpha() and i not in acceptable and i!= " ":
                 raise VaccineManagementException(
@@ -58,6 +68,32 @@ class VaccineManager:
 
 
         #Errores con phone_number
+
+        if not phone_number:
+            raise VaccineManagementException("Error: no phone number")
+        if type(phone_number) != str:
+            raise VaccineManagementException("Error: number must be a string")
+        if len(phone_number) != 9:
+            raise VaccineManagementException("Error: number must contain 9 characters and only numerals")
+        good_number = re.compile(r"[0-9]{9}")
+        test_number = good_number.fullmatch(phone_number)
+        if not test_number:
+            raise VaccineManagementException("Error: number must contain 9 characters and only numerals")
+
+        #Errores con age
+
+        if not age:
+            raise VaccineManagementException("Error: no age")
+        if type(age) != str:
+            raise VaccineManagementException("Error: age must be a string")
+
+        good_age = re.compile("^\d+$") #Age solo tiene números
+        test_age = good_age.fullmatch(age)
+        if not test_age:
+            raise VaccineManagementException("Error: age string must only contain a number from 6 to 125")
+        if int(age) not in range (6, 126):
+            raise VaccineManagementException("Error: age must be between 6 and 125")
+
 
 
 
