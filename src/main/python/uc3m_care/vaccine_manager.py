@@ -98,20 +98,42 @@ class VaccineManager:
         if int(age) not in range (6, 126):
             raise VaccineManagementException("Error: age must be between 6 and 125")
 
-        new_client = VaccinePatientRegister(patient_id, registration_type, name_surname, phone_number, age)
 
-        #Se crea un fichero json y se guarda la información de paciente
 
-        home_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles"
-        file_store = home_path + "store_patient.json"
 
-        # try:
-        #     with open(file_store, 'w', encoding="utf-8", newline="") as file:
-        #         json.dump(str(new_client), file, indent=2)
-        # except FileNotFoundError as ex:
-        #     raise VaccineManagementException("Failed to open file") from ex
-        # except json.JSONDecodeError as ex:
-        #     raise VaccineManagementException("JSON Decode Error - Wrong JSON Format")
+
+
+        new_client = VaccinePatientRegister(patient_id, name_surname, registration_type, phone_number, age)
+
+        #Vemos si el paciente ya está en el sistema
+
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+
+        try:
+            with open(file_store, 'r', encoding="utf-8", newline="") as file:
+                data_list = json.load(file)
+        except FileNotFoundError as ex:
+            data_list = []
+        except json.JSONDecodeError as ex:
+            raise VaccineManagementException("JSON Decode Error - Wrong JSON Format")
+        found = False
+        for item in data_list:
+            if item["_VaccinePatientRegister__patient_id"] == patient_id:
+                if (item["_VaccinePatientRegister__registration_type"] == registration_type) and (item["_VaccinePatientRegister__full_name"] == name_surname):
+                    found = True
+        if found:
+          raise VaccineManagementException("Patient ID already registered")
+
+        #Si estamos aquí, el paciente no se encuentra en el sistema, así que lo añadimos
+
+        data_list.append(new_client.__dict__)
+        try:
+            with open(file_store, "w", encoding = "utf-8", newline="") as file:
+                json.dump(data_list, file, indent = 2)
+        except:
+            raise VaccineManagementException("Wrong file or path") from ex
+
 
         return new_client.patient_system_id
 

@@ -58,7 +58,7 @@ class VaccinePatientRegister:
 
     @property
     def patient_system_id( self ):
-        """Returns the md5 signature"""
+        """Returns the md5 signature. Does not take into account the time"""
         return hashlib.md5(self.str_notime.encode()).hexdigest()
 
     @property

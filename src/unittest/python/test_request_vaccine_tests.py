@@ -1,14 +1,50 @@
 import unittest
+import os
+import json
+from pathlib import Path
 from uc3m_care import VaccineManager
 from uc3m_care import VaccineManagementException
 
 class MyTestCase(unittest.TestCase):
-    def test1_request_vaccination_ok(self):
-        my_request = VaccineManager()
+    """
+    Tests para los distintos casos de request_vaccination_id
 
+    Los tests 1, 7, 8, 36, 39 y 40 son casos correctos. El resto son de error
+
+    """
+    def test1_request_vaccination_ok(self):
+        # Si ya existe el fichero json, se borra
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+
+        if os.path.isfile(file_store):
+            os.remove(file_store)
+
+        my_request = VaccineManager()
+        # Se comprueba que el código devuelto es correcto
         value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
                                                   "Jose Johnson", "923412921", "45")
-        self.assertEqual("8bc92caa91fccc9370222915038ab642", value)
+        self.assertEqual("cf58022264a00986e4654da43a7ab2d7", value)
+
+        # Comprobamos el contenido del fichero json
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data_list = json.load(file)
+        found = [False, False, False, False, False]
+        for item in data_list:
+            if item["_VaccinePatientRegister__patient_id"] == "bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0":
+                found[0] = True
+            if item["_VaccinePatientRegister__full_name"] == "Jose Johnson":
+                found[1] = True
+            if item["_VaccinePatientRegister__registration_type"] == "Regular":
+                found[2] = True
+            if item["_VaccinePatientRegister__phone_number"] == "923412921":
+                found[3] = True
+            if item["_VaccinePatientRegister__age"] == "45":
+                found[4] = True
+        for i in found:
+            self.assertTrue(i)
+
+
 
     def test2_request_vaccination_notok_uuid1(self):
         my_request = VaccineManager()
@@ -51,18 +87,74 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual("Error: UUID must be a string", cm.exception.message)
 
     def test7_request_vaccination_ok(self):
+        # Si ya existe el fichero json, se borra
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+        if os.path.isfile(file_store):
+            os.remove(file_store)
+        # Se comprueba que el código devuelto es correcto
         my_request = VaccineManager()
-
         value = my_request.request_vaccination_id("567f65de-5c03-4e8e-ae50-aa6b49b6893f", "Familiar",
                                                   "Alfredo Sánchez", "666111222", "12")
-        self.assertEqual("ec5a2ec5753f1cdee94cc24e858ab6b4", value)
+        self.assertEqual("2212a8c2c0817ee54110f081ff7e14a2", value)
+
+        # Comprobamos el contenido del fichero json
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data_list = json.load(file)
+        found = [False, False, False, False, False]
+        for item in data_list:
+            if item["_VaccinePatientRegister__patient_id"] == "567f65de-5c03-4e8e-ae50-aa6b49b6893f":
+                found[0] = True
+            if item["_VaccinePatientRegister__full_name"] == "Alfredo Sánchez":
+                found[1] = True
+            if item["_VaccinePatientRegister__registration_type"] == "Familiar":
+                found[2] = True
+            if item["_VaccinePatientRegister__phone_number"] == "666111222":
+                found[3] = True
+            if item["_VaccinePatientRegister__age"] == "12":
+                found[4] = True
+        for i in found:
+            self.assertTrue(i)
 
     def test8_request_vaccination_ok(self):
-        my_request = VaccineManager()
+        #Abrimos el fichero para comprobar las entradas después
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+        if os.path.isfile(file_store):
+            os.remove(file_store)
 
+        #Se comprueba que el código devuelto es correcto
+        my_request = VaccineManager()
         value = my_request.request_vaccination_id("eb6cb027-08e9-4d11-bc85-dabf844bae22", "Familiar",
-                                                  "Pedro Son", "552555222", "56")
-        self.assertEqual("a1ee58f3fedef5dc284523b0c96a21ca", value)
+                                                  "Pedro Soni", "552555222", "56")
+        self.assertEqual("a6c600c150eb5b240168ddab1d73b235", value)
+
+        #Comprobamos el contenido del fichero json
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data_list = json.load(file)
+        found = [False, False, False, False, False]
+        for item in data_list:
+            if item["_VaccinePatientRegister__patient_id"] == "eb6cb027-08e9-4d11-bc85-dabf844bae22":
+                found[0] = True
+            if item["_VaccinePatientRegister__full_name"] == "Pedro Soni":
+                found[1] = True
+            if item["_VaccinePatientRegister__registration_type"] == "Familiar":
+                found[2] = True
+            if item["_VaccinePatientRegister__phone_number"] == "552555222":
+                found[3] = True
+            if item["_VaccinePatientRegister__age"] == "56":
+                found[4] = True
+        for i in found:
+            self.assertTrue(i)
+
+
+
+
+
+
+
+
+
 
     def test9_request_vaccination_notok_reg1(self):
         my_request = VaccineManager()
@@ -281,11 +373,39 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual("Error: age string must only contain a number from 6 to 125", cm.exception.message)
 
     def test36_request_vaccination_ok(self):
+
+        # Si ya existe el fichero json, se borra
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+        if os.path.isfile(file_store):
+            os.remove(file_store)
+
+        #Comprobamos el valor del código devuelto
         my_request = VaccineManager()
 
         value = my_request.request_vaccination_id("cb3dd087-0868-4203-bbbd-5e7899fbbe2a", "Regular",
                                                   "Rosa García", "678923456", "34")
-        self.assertEqual("4a1972fa6d088c1a119cf65cf9039f88", value)
+        self.assertEqual("04ef57001189019ce49f9344cc92a78a", value)
+
+        # Comprobamos el contenido del fichero json
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data_list = json.load(file)
+        found = [False, False, False, False, False]
+        for item in data_list:
+            if item["_VaccinePatientRegister__patient_id"] == "cb3dd087-0868-4203-bbbd-5e7899fbbe2a":
+                found[0] = True
+            if item["_VaccinePatientRegister__full_name"] == "Rosa García":
+                found[1] = True
+            if item["_VaccinePatientRegister__registration_type"] == "Regular":
+                found[2] = True
+            if item["_VaccinePatientRegister__phone_number"] == "678923456":
+                found[3] = True
+            if item["_VaccinePatientRegister__age"] == "34":
+                found[4] = True
+        for i in found:
+            self.assertTrue(i)
+
+
 
     def test37_request_vaccination_notok_uuid4(self):
         my_request = VaccineManager()
@@ -302,6 +422,72 @@ class MyTestCase(unittest.TestCase):
             value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
                                                           None, "923412921", "45")
         self.assertEqual("Error: name can't be null", cm.exception.message)
+    def test39_request_vaccination_ok(self):
+
+        # Si ya existe el fichero json, se borra
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+        if os.path.isfile(file_store):
+            os.remove(file_store)
+
+        # Comprobamos el valor del código devuelto
+        my_request = VaccineManager()
+
+        value = my_request.request_vaccination_id("31e68fe8-13dd-4dd3-9b81-69a66cb80a91", "Familiar",
+                                                  "Esternilocideo Masterianosones", "000000000", "6")
+        self.assertEqual("9a1138a3e918ced64d7d05795798ee0a", value)
+
+        # Comprobamos el contenido del fichero json
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data_list = json.load(file)
+        found = [False, False, False, False, False]
+        for item in data_list:
+            if item["_VaccinePatientRegister__patient_id"] == "31e68fe8-13dd-4dd3-9b81-69a66cb80a91":
+                found[0] = True
+            if item["_VaccinePatientRegister__full_name"] == "Esternilocideo Masterianosones":
+                found[1] = True
+            if item["_VaccinePatientRegister__registration_type"] == "Familiar":
+                found[2] = True
+            if item["_VaccinePatientRegister__phone_number"] == "000000000":
+                found[3] = True
+            if item["_VaccinePatientRegister__age"] == "6":
+                found[4] = True
+        for i in found:
+            self.assertTrue(i)
+
+    def test40_request_vaccination_ok(self):
+
+        # Si ya existe el fichero json, se borra
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+        if os.path.isfile(file_store):
+            os.remove(file_store)
+
+        # Comprobamos el valor del código devuelto
+        my_request = VaccineManager()
+
+        value = my_request.request_vaccination_id("9f159456-9a1c-4bd4-a1e3-b2f181c86b6c", "Regular",
+                                                  "C J", "918234765", "125")
+        self.assertEqual("4bfe2cc688ee752991718af264c18c6d", value)
+
+        # Comprobamos el contenido del fichero json
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data_list = json.load(file)
+        found = [False, False, False, False, False]
+        for item in data_list:
+            if item["_VaccinePatientRegister__patient_id"] == "9f159456-9a1c-4bd4-a1e3-b2f181c86b6c":
+                found[0] = True
+            if item["_VaccinePatientRegister__full_name"] == "C J":
+                found[1] = True
+            if item["_VaccinePatientRegister__registration_type"] == "Regular":
+                found[2] = True
+            if item["_VaccinePatientRegister__phone_number"] == "918234765":
+                found[3] = True
+            if item["_VaccinePatientRegister__age"] == "125":
+                found[4] = True
+        for i in found:
+            self.assertTrue(i)
+
 
 
 
