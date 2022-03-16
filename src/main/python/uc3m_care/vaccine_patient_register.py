@@ -59,11 +59,16 @@ class VaccinePatientRegister:
     @property
     def patient_system_id( self ):
         """Returns the md5 signature"""
-        return hashlib.md5(self.__str__().encode()).hexdigest()
+        return hashlib.md5(self.str_notime.encode()).hexdigest()
 
     @property
     def patient_age( self ):
         """Returns the patient's age"""
         return self.__age
 
+    @property
+    def str_notime(self):
+        """Returns the same string as __str__ without the timestamp. Usefol for md5 algorithm"""
+        dict_notime = {i: self.__dict__[i] for i in self.__dict__.keys() if i != '_VaccinePatientRegister__time_stamp'}
+        return "VaccinePatientRegister:" + json.dumps(dict_notime)
     

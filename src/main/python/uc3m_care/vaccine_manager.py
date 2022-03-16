@@ -1,7 +1,11 @@
 """Module """
 import uuid
 import re
+import os
+from pathlib import Path
+import json
 from vaccine_management_exception import VaccineManagementException
+from vaccine_patient_register import VaccinePatientRegister
 class VaccineManager:
     """Class for providing the methods for managing the vaccination process"""
     def __init__(self):
@@ -93,6 +97,23 @@ class VaccineManager:
             raise VaccineManagementException("Error: age string must only contain a number from 6 to 125")
         if int(age) not in range (6, 126):
             raise VaccineManagementException("Error: age must be between 6 and 125")
+
+        new_client = VaccinePatientRegister(patient_id, registration_type, name_surname, phone_number, age)
+
+        #Se crea un fichero json y se guarda la información de paciente
+
+        home_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles"
+        file_store = home_path + "store_patient.json"
+
+        # try:
+        #     with open(file_store, 'w', encoding="utf-8", newline="") as file:
+        #         json.dump(str(new_client), file, indent=2)
+        # except FileNotFoundError as ex:
+        #     raise VaccineManagementException("Failed to open file") from ex
+        # except json.JSONDecodeError as ex:
+        #     raise VaccineManagementException("JSON Decode Error - Wrong JSON Format")
+
+        return new_client.patient_system_id
 
 
 
