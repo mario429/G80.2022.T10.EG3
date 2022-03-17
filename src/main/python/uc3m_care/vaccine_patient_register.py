@@ -6,13 +6,13 @@ MODULE: access_request. Contains the access request class
 import hashlib
 import json
 from datetime import datetime
-
 class VaccinePatientRegister:
     """
 
     Class representing the register of the patient in the system
 
     """
+
     def __init__(self, patient_id, full_name, registration_type, phone_number, age):
         self.__patient_id = patient_id
         self.__full_name = full_name
@@ -37,6 +37,7 @@ class VaccinePatientRegister:
 
     @full_name.setter
     def full_name(self, value):
+        """Setter method for name"""
         self.__full_name = value
 
     @property
@@ -93,7 +94,7 @@ class VaccinePatientRegister:
         Returns the md5 signature. Does not take into account the time
 
         """
-        return hashlib.md5(self.str_notime.encode()).hexdigest()
+        return hashlib.md5(self.__str__().encode()).hexdigest()
 
     @property
     def patient_age(self):
@@ -103,15 +104,3 @@ class VaccinePatientRegister:
 
         """
         return self.__age
-
-    @property
-    def str_notime(self):
-        """
-
-        Returns the same string as __str__ without the timestamp. Usefol for md5 algorithm
-
-        """
-        dict_notime = {i: self.__dict__[i] for i in self.__dict__.keys() if i != \
-            '_VaccinePatientRegister__time_stamp'}
-        return "VaccinePatientRegister:" + json.dumps(dict_notime)
-    
