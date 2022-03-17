@@ -1,11 +1,24 @@
-"""Contains the class Vaccination Appoinment"""
+"""
+
+Contains the class Vaccination Appoinment
+
+"""
 from datetime import datetime
 import hashlib
 
 class VaccinationAppoinment():
-    """Class representing an appoinment  for the vaccination of a patient"""
+    """
+
+    Class representing an appoinment  for the vaccination of a patient
+
+    """
 
     def __init__(self, guid, patient_sys_id, patient_phone_number, days):
+        """
+
+        DOCSTRING
+
+        """
         self.__alg = "SHA-256"
         self.__type = "DS"
         self.__patient_id = guid
@@ -21,14 +34,22 @@ class VaccinationAppoinment():
             self.__appoinment_date = self.__issued_at + (days * 24 * 60 * 60)
 
     def __signature_string(self):
-        """Composes the string to be used for generating the key for the date"""
+        """
+
+        Composes the string to be used for generating the key for the date
+
+        """
         return "{alg:" + self.__alg +",typ:" + self.__type +",patient_sys_id:" + \
                self.__patient_sys_id + ",issuedate:" + self.__issued_at + \
                ",vaccinationtiondate:" + self.__appoinment_date + "}"
 
     @property
     def patient_id(self):
-        """Property that represents the guid of the patient"""
+        """
+
+        Property that represents the guid of the patient
+
+        """
         return self.__patient_id
 
     @patient_id.setter
@@ -37,7 +58,11 @@ class VaccinationAppoinment():
 
     @property
     def patient_sys_id(self):
-        """Property that represents the patient_sys_id of the patient"""
+        """
+
+        Property that represents the patient_sys_id of the patient
+
+        """
         return self.__patient_sys_id
 
     @patient_sys_id.setter
@@ -46,7 +71,11 @@ class VaccinationAppoinment():
 
     @property
     def phone_number(self):
-        """Property that represents the phone number of the patient"""
+        """
+
+        Property that represents the phone number of the patient
+
+        """
         return self.__phone_number
 
     @phone_number.setter
@@ -55,12 +84,20 @@ class VaccinationAppoinment():
 
     @property
     def vaccination_signature(self):
-        """Returns the sha256 signature of the date"""
+        """
+
+        Returns the sha256 signature of the date
+
+        """
         return hashlib.sha256(self.__signature_string().encode()).hexdigest()
 
     @property
     def issued_at(self):
-        """Returns the issued at value"""
+        """
+
+        Returns the issued at value
+
+        """
         return self.__issued_at
 
     @issued_at.setter
@@ -69,5 +106,9 @@ class VaccinationAppoinment():
 
     @property
     def appoinment_date(self):
-        """Returns the vaccination date"""
+        """
+
+        Returns the vaccination date
+
+        """
         return self.__appoinment_date
