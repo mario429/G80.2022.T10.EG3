@@ -11,7 +11,8 @@ from uc3m_care import VaccineManager
 from uc3m_care import VaccineManagementException
 from freezegun import freeze_time
 
-@freeze_time("2022-06-06")
+@freeze_time("2022-06-06") #Congelamos el tiempo para que la hora sea siempre la misma en los tests
+
 class MyTestCase(unittest.TestCase):
     """
     Tests para los distintos casos de request_vaccination_id
@@ -82,31 +83,8 @@ class MyTestCase(unittest.TestCase):
                 "Regular", "Jose Johnson", "923412921", "45")
         self.assertEqual("Error: invalid UUID", c_m.exception.message)
 
-    def test4_request_vaccination_notok_uuid2(self):
-        """
 
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("gghg", "Regular",
-                "Jose Johnson", "923412921", "45")
-        self.assertEqual("Error: invalid UUID", c_m.exception.message)
-
-    def test5_request_vaccination_notok_uuid3(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id(None, "Regular",
-                "Jose Johnson", "923412921", "45")
-        self.assertEqual("Error: please enter a UUID", c_m.exception.message)
-
-    def test6_request_vaccination_notok_uuid4(self):
+    def test4_request_vaccination_notok_uuid4(self):
         """
 
         DOCSTRING
@@ -116,9 +94,9 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id(99999, "Regular",
                 "Jose Johnson", "923412921", "45")
-        self.assertEqual("Error: UUID must be a string", c_m.exception.message)
+        self.assertEqual("Error: invalid UUID", c_m.exception.message)
 
-    def test7_request_vaccination_ok(self):
+    def test5_request_vaccination_ok(self):
         """
 
         DOCSTRING
@@ -155,7 +133,7 @@ class MyTestCase(unittest.TestCase):
         for i in found:
             self.assertTrue(i)
 
-    def test8_request_vaccination_ok(self):
+    def test6_request_vaccination_ok(self):
         """
 
         DOCSTRING
@@ -196,7 +174,7 @@ class MyTestCase(unittest.TestCase):
         for i in found:
             self.assertTrue(i)
 
-    def test9_request_vaccination_notok_reg1(self):
+    def test7_request_vaccination_notok_reg1(self):
         """
 
         DOCSTRING
@@ -206,21 +184,10 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                 "Perros", "Toby Woof", "923412921", "8")
-        self.assertEqual("Error: invalid registration type", c_m.exception.message)
+        self.assertEqual("Error: registration_type "
+                         "must be 'Familiar' or 'Regular'", c_m.exception.message)
 
-    def test10_request_vaccination_notok_reg1(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "p231m2", "Toby Woof", "923412921", "8")
-        self.assertEqual("Error: invalid registration type", c_m.exception.message)
-
-    def test11_request_vaccination_notok_reg2(self):
+    def test8_request_vaccination_notok_reg2(self):
         """
 
         DOCSTRING
@@ -230,33 +197,10 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                 234231, "Toby Woof", "923412921", "8")
-        self.assertEqual("Error: registration type must be a string", c_m.exception.message)
+        self.assertEqual("Error: registration_type must be "
+                         "'Familiar' or 'Regular'", c_m.exception.message)
 
-    def test12_request_vaccination_notok_reg2(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                231.123, "Toby Woof", "923412921", "8")
-        self.assertEqual("Error: registration type must be a string", c_m.exception.message)
-
-    def test13_request_vaccination_notok_reg3(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                None, "Toby Woof", "923412921", "8")
-        self.assertEqual("Error: registration type can't be null", c_m.exception.message)
-
-    def test14_request_vaccination_notok_name1(self):
+    def test9_request_vaccination_notok_name1(self):
         """
 
         DOCSTRING
@@ -268,33 +212,7 @@ class MyTestCase(unittest.TestCase):
                 "Regular", "Jose Federicogonzaloramonperecianorodríguez", "923412921", "45")
         self.assertEqual("Error: name is too long", c_m.exception.message)
 
-    def test15_request_vaccination_notok_name2(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Juan Nepomuceno96", "923412921", "45")
-        self.assertEqual("Error: name must have two words, "
-                "separated by a space and contain no digits", c_m.exception.message)
-
-    def test16_request_vaccination_notok_name2(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "198Juan Nepomuceno", "923412921", "45")
-        self.assertEqual("Error: name must have two words, "
-                "separated by a space and contain no digits", c_m.exception.message)
-
-    def test17_request_vaccination_notok_name3(self):
+    def test10_request_vaccination_notok_name3(self):
         """
 
         DOCSTRING
@@ -304,10 +222,9 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                 "Regular", "Feliciano", "923412921", "45")
-        self.assertEqual("Error: name must have two words, "
-                "separated by a space and contain no digits", c_m.exception.message)
+        self.assertEqual("Error: wrong name format", c_m.exception.message)
 
-    def test18_request_vaccination_notok_name4(self):
+    def test11_request_vaccination_notok_name4(self):
         """
 
         DOCSTRING
@@ -317,35 +234,9 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                 "Regular", "Pepe González de la Santa Sal", "923412921", "45")
-        self.assertEqual("Error: name must have two words, "
-                "separated by a space and contain no digits", c_m.exception.message)
+        self.assertEqual("Error: wrong name format", c_m.exception.message)
 
-    def test19_request_vaccination_notok_name4(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Nombre muy Incorrecto", "923412921", "45")
-        self.assertEqual("Error: name must have two words, "
-                "separated by a space and contain no digits", c_m.exception.message)
-
-    def test20_request_vaccination_notok_name5(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", 2341231, "923412921", "45")
-        self.assertEqual("Error: name must be a string", c_m.exception.message)
-
-    def test21_request_vaccination_notok_number1(self):
+    def test12_request_vaccination_notok_number1(self):
         """
 
         DOCSTRING
@@ -355,35 +246,10 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                 "Regular", "Jose Johnson", "99123", "45")
-        self.assertEqual("Error: number must contain 9 characters and only numerals",
-            c_m.exception.message)
+        self.assertEqual("Error: number must "
+                         "contain 9 characters and only digits", c_m.exception.message)
 
-    def test22_request_vaccination_notok_number1(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "0", "45")
-        self.assertEqual("Error: number must contain 9 characters and only numerals",
-                c_m.exception.message)
-
-    def test23_request_vaccination_notok_number1(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "", "45")
-        self.assertEqual("Error: no phone number", c_m.exception.message)
-
-    def test24_request_vaccination_notok_number2(self):
+    def test13_request_vaccination_notok_number2(self):
         """
 
         DOCSTRING
@@ -393,10 +259,10 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                 "Regular", "Jose Johnson", "23424534324", "45")
-        self.assertEqual("Error: number must contain 9 characters and only numerals",
-                c_m.exception.message)
+        self.assertEqual("Error: number must contain "
+                         "9 characters and only digits",c_m.exception.message)
 
-    def test25_request_vaccination_notok_number3(self):
+    def test14_request_vaccination_notok_number3(self):
         """
 
         DOCSTRING
@@ -406,47 +272,10 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                 "Regular", "Jose Johnson", "Esteesmino", "45")
-        self.assertEqual("Error: number must contain 9 characters and only numerals",
+        self.assertEqual("Error: number must contain 9 characters and only digits",
                 c_m.exception.message)
 
-    def test26_request_vaccination_notok_number3(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "234num2323", "45")
-        self.assertEqual("Error: number must contain 9 characters and only numerals",
-                c_m.exception.message)
-
-    def test27_request_vaccination_notok_number4(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", None, "45")
-        self.assertEqual("Error: no phone number", c_m.exception.message)
-
-    def test28_request_vaccination_notok_number5(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", 24.67, "45")
-        self.assertEqual("Error: number must be a string", c_m.exception.message)
-
-    def test29_request_vaccination_notok_age1(self):
+    def test15_request_vaccination_notok_age1(self):
         """
 
         DOCSTRING
@@ -458,20 +287,8 @@ class MyTestCase(unittest.TestCase):
                 "Regular", "Jose Johnson", "685838390", "5")
         self.assertEqual("Error: age must be between 6 and 125", c_m.exception.message)
 
-    def test30_request_vaccination_notok_age1(self):
-        """
 
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "685838390", "-3241")
-        self.assertEqual("Error: age string must only contain a number from 6 to 125",
-                c_m.exception.message)
-
-    def test31_request_vaccination_notok_age2(self):
+    def test16_request_vaccination_notok_age2(self):
         """
 
         DOCSTRING
@@ -483,19 +300,8 @@ class MyTestCase(unittest.TestCase):
                 "Regular", "Jose Johnson", "685838390", "126")
         self.assertEqual("Error: age must be between 6 and 125", c_m.exception.message)
 
-    def test32_request_vaccination_notok_age2(self):
-        """
 
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "685838390", "9999")
-        self.assertEqual("Error: age must be between 6 and 125", c_m.exception.message)
-
-    def test33_request_vaccination_notok_age2(self):
+    def test17_request_vaccination_notok_age2(self):
         """
 
         DOCSTRING
@@ -505,36 +311,10 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                 "Regular", "Jose Johnson", "685838390", "64.35")
-        self.assertEqual("Error: age string must only contain a number from 6 to 125",
+        self.assertEqual("Error: invalid age format",
                 c_m.exception.message)
 
-    def test34_request_vaccination_notok_age2(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "685838390", "32.00")
-        self.assertEqual("Error: age string must only contain a number from 6 to 125",
-                c_m.exception.message)
-
-    def test35_request_vaccination_notok_age3(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "685838390", "stringnum")
-        self.assertEqual("Error: age string must only contain a number from 6 to 125",
-            c_m.exception.message)
-
-    def test36_request_vaccination_ok(self):
+    def test18_request_vaccination_ok(self):
         """
 
         DOCSTRING
@@ -575,31 +355,7 @@ class MyTestCase(unittest.TestCase):
         for i in found:
             self.assertTrue(i)
 
-    def test37_request_vaccination_notok_uuid4(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id(None, "Regular",
-                                                      "Jose Johnson", "923412921", "45")
-        self.assertEqual("Error: please enter a UUID", c_m.exception.message)
-
-    def test38_request_vaccination_notok_name6(self):
-        """
-
-        DOCSTRING
-
-        """
-        my_request = VaccineManager()
-        with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", None, "923412921", "45")
-        self.assertEqual("Error: name can't be null", c_m.exception.message)
-
-    def test39_request_vaccination_ok(self):
+    def test19_request_vaccination_ok(self):
         """
 
         DOCSTRING
@@ -640,7 +396,7 @@ class MyTestCase(unittest.TestCase):
         for i in found:
             self.assertTrue(i)
 
-    def test40_request_vaccination_ok(self):
+    def test20_request_vaccination_ok(self):
         """
 
         DOCSTRING
@@ -680,6 +436,59 @@ class MyTestCase(unittest.TestCase):
                 found[4] = True
         for i in found:
             self.assertTrue(i)
+
+    def test21_request_vaccination_ok(self):
+        """
+
+        DOCSTRING
+
+        """
+        # Si ya existe el fichero json, se borra
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+        if os.path.isfile(file_store):
+            os.remove(file_store)
+        # Creamos un código correcto para que se guarde en el fichero json
+        my_request1 = VaccineManager()
+        value = my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56", "Regular",
+                                                  "Marco Pedro", "925902123", "89")
+        # Ahora creamos el mismo para comprobar si da error
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_request1 = VaccineManager()
+            value = my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56", "Regular",
+                                                       "Marco Pedro", "925902123", "89")
+        self.assertEqual("Error: patient ID already registered", c_m.exception.message)
+
+    def test22_request_vaccination_ok(self):
+        """
+
+        DOCSTRING
+
+        """
+        # Si ya existe el fichero json, se borra
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+        if os.path.isfile(file_store):
+            os.remove(file_store)
+        # Creamos un código correcto para que se guarde en el fichero
+        my_request1 = VaccineManager()
+        value = my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56", "Regular",
+                                                   "Marco Pedro", "925902123", "89")
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data1 = json.load(file)
+
+        # Ahora creamos el mismo pero con familiar
+        my_request1 = VaccineManager()
+        value = my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56", "Familiar",
+                                                   "Marco Pedro", "925902123", "89")
+
+        #Por último, comprobamos que el segundo tenga "Familiar"
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data2 = json.load(file)
+
+        self.assertEqual(data1[0], data2[0])
+        self.assertTrue(data2[1]['_VaccinePatientRegister__registration_type'] == "Familiar")
+
 
 
 if __name__ == '__main__':

@@ -50,28 +50,19 @@ class VaccineManager:
         """
 
         # Primero manejamos los errores con patient_id
-        if not patient_id:
-            raise VaccineManagementException ("Error: please enter a UUID")
-        if type(patient_id) != str:
-            raise VaccineManagementException("Error: UUID must be a string")
-
+        if not patient_id or type(patient_id) != str:
+            raise VaccineManagementException ("Error: invalid UUID")
         # Se encarga de ver si patient_id es un UUID v4 válido.
         # Si no hay errores, continúa la ejecución
         self.validate_guid(patient_id)
 
         # Errores con registration_type
-        if not registration_type:
-            raise VaccineManagementException("Error: registration type can't be null")
-        if type(registration_type) != str:
-            raise VaccineManagementException("Error: registration type must be a string")
-        if (registration_type != "Familiar" and registration_type != "Regular"):
-            raise VaccineManagementException("Error: invalid registration type")
+        if registration_type!="Regular" and registration_type != "Familiar":
+            raise VaccineManagementException("Error: registration_type must be 'Familiar' or 'Regular'")
 
         # Errores con name_surname
-        if not name_surname:
-            raise VaccineManagementException("Error: name can't be null")
-        if type(name_surname) != str:
-            raise VaccineManagementException("Error: name must be a string")
+        if not name_surname or type(name_surname) != str:
+            raise VaccineManagementException("Error: wrong name format")
         if len(name_surname) > 30:
             raise VaccineManagementException("Error: name is too long")
 
@@ -79,25 +70,21 @@ class VaccineManager:
         good_name = re.compile(r'\w+\s\w+')
         test_name = good_name.fullmatch(name_surname)
         if not test_name:
-            raise VaccineManagementException("Error: name must have two words, "
-                "separated by a space and contain no digits")
+            raise VaccineManagementException("Error: wrong name format")
 
         acceptable = ["á", "é", "í", "ó", "ú", "ñ", "ç", "Á", "É", "Í", "Ó", "Ú", "ü"]
 
         # Comprobamos si hay caracteres no válidos
         for i in name_surname:
             if not i.isalpha() and i not in acceptable and i!= " ":
-                raise VaccineManagementException(
-                    "Error: name must have two words, separated by a space and contain no digits")
+                raise VaccineManagementException("Error: wrong name format")
 
         # Errores con phone_number
-        if not phone_number:
-            raise VaccineManagementException("Error: no phone number")
-        if type(phone_number) != str:
-            raise VaccineManagementException("Error: number must be a string")
+        if not phone_number or type(phone_number) != str:
+            raise VaccineManagementException("Error: invalid phone number format")
         if len(phone_number) != 9:
             raise VaccineManagementException("Error: number must contain "
-                "9 characters and only numerals")
+                "9 characters and only digits")
         good_number = re.compile(r"[0-9]{9}")
         test_number = good_number.fullmatch(phone_number)
         if not test_number:
@@ -105,16 +92,12 @@ class VaccineManager:
                 "9 characters and only numerals")
 
         # Errores con age
-        if not age:
-            raise VaccineManagementException("Error: no age")
-        if type(age) != str:
-            raise VaccineManagementException("Error: age must be a string")
-
+        if not age or type(age) != str:
+            raise VaccineManagementException("Error: invalid age format")
         good_age = re.compile("^\d+$") # Age solo tiene números
         test_age = good_age.fullmatch(age)
         if not test_age:
-            raise VaccineManagementException("Error: age string must "
-                "only contain a number from 6 to 125")
+            raise VaccineManagementException("Error: invalid age format")
         if int(age) not in range (6, 126):
             raise VaccineManagementException("Error: age must be between 6 and 125")
         new_client = VaccinePatientRegister(patient_id, name_surname,
@@ -139,7 +122,7 @@ class VaccineManager:
                         name_surname):
                     found = True
         if found:
-            raise VaccineManagementException("Patient ID already registered")
+            raise VaccineManagementException("Error: patient ID already registered")
 
         # Si estamos aquí, el paciente no se encuentra en el sistema, así que lo añadimos
         data_list.append(new_client.__dict__)
