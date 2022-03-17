@@ -1,11 +1,19 @@
-"""MODULE: access_request. Contains the access request class"""
+"""
+
+MODULE: access_request. Contains the access request class
+
+"""
 import hashlib
 import json
 from datetime import datetime
 
 class VaccinePatientRegister:
-    """Class representing the register of the patient in the system"""
-    def __init__( self, patient_id, full_name, registration_type, phone_number, age ):
+    """
+
+    Class representing the register of the patient in the system
+
+    """
+    def __init__(self, patient_id, full_name, registration_type, phone_number, age):
         self.__patient_id = patient_id
         self.__full_name = full_name
         self.__registration_type = registration_type
@@ -18,57 +26,92 @@ class VaccinePatientRegister:
         return "VaccinePatientRegister:" + json.dumps(self.__dict__)
 
     @property
-    def full_name( self ):
-        """Property representing the name and the surname of
-        the person who request the registration"""
+    def full_name(self):
+        """
+
+        Property representing the name and the surname of
+        the person who request the registration
+
+        """
         return self.__full_name
 
     @full_name.setter
-    def full_name( self, value ):
+    def full_name(self, value):
         self.__full_name = value
 
     @property
-    def vaccine_type( self ):
-        """Property representing the type vaccine"""
+    def vaccine_type(self):
+        """
+
+        Property representing the type vaccine
+
+        """
         return self.__registration_type
+
     @vaccine_type.setter
     def vaccine_type( self, value ):
         self.__registration_type = value
 
     @property
-    def phone_number( self ):
-        """Property representing the requester's phone number"""
+    def phone_number(self):
+        """
+
+        Property representing the requester's phone number
+
+        """
         return self.__phone_number
+
     @phone_number.setter
     def phone_number( self, value ):
         self.__phone_number = value
 
     @property
-    def patient_id( self ):
-        """Property representing the requester's UUID"""
+    def patient_id(self):
+        """
+
+        Property representing the requester's UUID
+
+        """
         return self.__patient_id
     @patient_id.setter
-    def patient_id( self, value ):
+    def patient_id(self, value):
         self.__patient_id = value
 
     @property
     def time_stamp(self):
-        """Read-only property that returns the timestamp of the request"""
+        """
+
+        Read-only property that returns the timestamp of the request
+
+        """
         return self.__time_stamp
 
     @property
-    def patient_system_id( self ):
-        """Returns the md5 signature. Does not take into account the time"""
+    def patient_system_id(self):
+        """
+
+        Returns the md5 signature. Does not take into account the time
+
+        """
         return hashlib.md5(self.str_notime.encode()).hexdigest()
 
     @property
-    def patient_age( self ):
-        """Returns the patient's age"""
+    def patient_age(self):
+        """
+
+        Returns the patient's age
+
+        """
         return self.__age
 
     @property
     def str_notime(self):
-        """Returns the same string as __str__ without the timestamp. Usefol for md5 algorithm"""
-        dict_notime = {i: self.__dict__[i] for i in self.__dict__.keys() if i != '_VaccinePatientRegister__time_stamp'}
+        """
+
+        Returns the same string as __str__ without the timestamp. Usefol for md5 algorithm
+
+        """
+        dict_notime = {i: self.__dict__[i] for i in self.__dict__.keys() if i != \
+            '_VaccinePatientRegister__time_stamp'}
         return "VaccinePatientRegister:" + json.dumps(dict_notime)
     
