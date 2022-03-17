@@ -3,13 +3,11 @@
 Module
 
 """
-import uuid
 import re
-import os
 from pathlib import Path
 import json
-from vaccine_management_exception import VaccineManagementException
-from vaccine_patient_register import VaccinePatientRegister
+from .vaccine_management_exception import VaccineManagementException
+from .vaccine_patient_register import VaccinePatientRegister
 class VaccineManager:
     """
 
