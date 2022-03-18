@@ -15,9 +15,9 @@ from freezegun import freeze_time
 
 class MyTestCase(unittest.TestCase):
     """
-    Tests para los distintos casos de request_vaccination_id
 
-    Los tests 1, 7, 8, 36, 39 y 40 son casos correctos. El resto son de error
+    Clase que recoge los tests que resultan en fallos o éxitos según su finalidad
+
 
     """
     def test1_request_vaccination_ok(self):
@@ -476,13 +476,13 @@ class MyTestCase(unittest.TestCase):
             os.remove(file_store)
         # Creamos un código correcto para que se guarde en el fichero json
         my_request1 = VaccineManager()
-        value = my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56", "Regular",
-                                                  "Marco Pedro", "925902123", "89")
+        my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56",
+            "Regular", "Marco Pedro", "925902123", "89")
         # Ahora creamos el mismo para comprobar si da error
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request1 = VaccineManager()
-            value = my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56", "Regular",
-                                                       "Marco Pedro", "925902123", "89")
+            my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56",
+                "Regular", "Marco Pedro", "925902123", "89")
         self.assertEqual("Error: patient ID already registered", c_m.exception.message)
 
     def test22_request_vaccination_ok(self):
@@ -500,15 +500,15 @@ class MyTestCase(unittest.TestCase):
             os.remove(file_store)
         # Creamos un código correcto para que se guarde en el fichero
         my_request1 = VaccineManager()
-        value = my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56", "Regular",
-                                                   "Marco Pedro", "925902123", "89")
+        my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56",
+            "Regular", "Marco Pedro", "925902123", "89")
         with open(file_store, "r", encoding="utf-8", newline="") as file:
             data1 = json.load(file)
 
         # Ahora creamos el mismo pero con familiar
         my_request1 = VaccineManager()
-        value = my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56", "Familiar",
-                                                   "Marco Pedro", "925902123", "89")
+        my_request1.request_vaccination_id("6707dad0-c806-4901-87cf-d2e161618f56",
+            "Familiar", "Marco Pedro", "925902123", "89")
 
         #Por último, comprobamos que el segundo tenga "Familiar"
         with open(file_store, "r", encoding="utf-8", newline="") as file:
@@ -516,8 +516,6 @@ class MyTestCase(unittest.TestCase):
 
         self.assertEqual(data1[0], data2[0])
         self.assertTrue(data2[1]['_VaccinePatientRegister__registration_type'] == "Familiar")
-
-
 
 if __name__ == '__main__':
     unittest.main()
