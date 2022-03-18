@@ -16,7 +16,7 @@ class VaccinationAppoinment():
     def __init__(self, guid, patient_sys_id, patient_phone_number, days):
         """
 
-        DOCSTRING
+        Constructor for the VaccinationAppointments objects
 
         """
         self.__alg = "SHA-256"

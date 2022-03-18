@@ -1,3 +1,4 @@
+# pylint: disable=R0904
 """
 
 Este fichero contiene todos los tests unitarios

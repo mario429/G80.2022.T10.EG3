@@ -1,6 +1,11 @@
+# pylint: disable=R0904
+# pylint: disable=R0913
+# pylint: disable-msg=too-many-locals
+# pylint: disable-msg=too-many-branches
+# pylint: disable-msg=too-many-statements
 """
 
-Module
+Module for the management of the vaccination process
 
 """
 import re
@@ -8,6 +13,7 @@ from pathlib import Path
 import json
 from .vaccine_management_exception import VaccineManagementException
 from .vaccine_patient_register import VaccinePatientRegister
+
 class VaccineManager:
     """
 
@@ -17,10 +23,9 @@ class VaccineManager:
     def __init__(self):
         """
 
-        DOCSTRING
+        Constructor (with pass function)
 
         """
-        pass
 
     @staticmethod
     def validate_guid(patient_id):
@@ -45,20 +50,22 @@ class VaccineManager:
         name_surname, phone_number, age):
         """
 
-        DOCSTRING
+        Method that validates a patient's data for vaccination
 
         """
 
         # Primero manejamos los errores con patient_id
         if not patient_id or type(patient_id) != str:
-            raise VaccineManagementException ("Error: invalid UUID")
+            raise VaccineManagementException("Error: invalid UUID")
+
         # Se encarga de ver si patient_id es un UUID v4 válido.
         # Si no hay errores, continúa la ejecución
         self.validate_guid(patient_id)
 
         # Errores con registration_type
-        if registration_type!="Regular" and registration_type != "Familiar":
-            raise VaccineManagementException("Error: registration_type must be 'Familiar' or 'Regular'")
+        if registration_type != "Regular" and registration_type != "Familiar":
+            raise VaccineManagementException("Error: registration_type must be "
+                "'Familiar' or 'Regular'")
 
         # Errores con name_surname
         if not name_surname or type(name_surname) != str:
@@ -94,7 +101,7 @@ class VaccineManager:
         # Errores con age
         if not age or type(age) != str:
             raise VaccineManagementException("Error: invalid age format")
-        good_age = re.compile("^\d+$") # Age solo tiene números
+        good_age = re.compile(r"^\d+$")# Age solo tiene números
         test_age = good_age.fullmatch(age)
         if not test_age:
             raise VaccineManagementException("Error: invalid age format")
@@ -110,15 +117,15 @@ class VaccineManager:
         try:
             with open(file_store, 'r', encoding="utf-8", newline="") as file:
                 data_list = json.load(file)
-        except FileNotFoundError as ex:
+        except FileNotFoundError:
             data_list = []
-        except json.JSONDecodeError as ex:
+        except json.JSONDecodeError:
             raise VaccineManagementException("JSON Decode Error - Wrong JSON Format")
         found = False
         for item in data_list:
             if item["_VaccinePatientRegister__patient_id"] == patient_id:
                 if (item["_VaccinePatientRegister__registration_type"] == \
-                    registration_type) and (item["_VaccinePatientRegister__full_name"] == \
+                    registration_type) and (item["_VaccinePatientRegister__full_name"] ==
                         name_surname):
                     found = True
         if found:
@@ -130,5 +137,5 @@ class VaccineManager:
             with open(file_store, "w", encoding="utf-8", newline="") as file:
                 json.dump(data_list, file, indent=2)
         except:
-            raise VaccineManagementException("Wrong file or path") from ex
+            raise VaccineManagementException("Wrong file or path")
         return new_client.patient_system_id

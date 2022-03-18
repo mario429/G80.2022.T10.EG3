@@ -1,3 +1,5 @@
+# pylint: disable=R0904
+# pylint: disable=R0913
 """
 
 MODULE: access_request. Contains the access request class
