@@ -1,6 +1,6 @@
 """
 
-DOCSTRING
+Este fichero contiene todos los tests unitarios
 
 """
 import unittest
@@ -11,7 +11,7 @@ from uc3m_care import VaccineManager
 from uc3m_care import VaccineManagementException
 from freezegun import freeze_time
 
-@freeze_time("2022-06-06") #Congelamos el tiempo para que la hora sea siempre la misma en los tests
+@freeze_time("2022-06-06") # Congelamos el tiempo para que la hora sea siempre la misma en los tests
 
 class MyTestCase(unittest.TestCase):
     """
@@ -23,7 +23,9 @@ class MyTestCase(unittest.TestCase):
     def test1_request_vaccination_ok(self):
         """
 
-        DOCSTRING
+        Test que comprueba si los datos necesarios para solicitar la
+        vacunación son correctos. El test devuelve
+        un resultado correcto.
 
         """
         # Si ya existe el fichero json, se borra
@@ -32,6 +34,7 @@ class MyTestCase(unittest.TestCase):
         if os.path.isfile(file_store):
             os.remove(file_store)
         my_request = VaccineManager()
+
         # Se comprueba que el código devuelto es correcto
         value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
             "Jose Johnson", "923412921", "45")
@@ -62,7 +65,8 @@ class MyTestCase(unittest.TestCase):
     def test2_request_vaccination_notok_uuid1(self):
         """
 
-        DOCSTRING
+        Test que comprueba que se devuelve un error cuando se utiliza una
+        UUID correcta pero desactualizada (antigua).
 
         """
         my_request = VaccineManager()
@@ -74,7 +78,8 @@ class MyTestCase(unittest.TestCase):
     def test3_request_vaccination_notok_uuid2(self):
         """
 
-        DOCSTRING
+        Test que comprueba que se devuelve un error cuando el UUID
+        NO es correcto (caracter extra añadido para provocar el fallo).
 
         """
         my_request = VaccineManager()
@@ -87,7 +92,9 @@ class MyTestCase(unittest.TestCase):
     def test4_request_vaccination_notok_uuid4(self):
         """
 
-        DOCSTRING
+        Test que comprueba que se devuelve un error cuando el
+        UUID NO es un String (se usa un número entero para provocar
+        el fallo).
 
         """
         my_request = VaccineManager()
@@ -99,7 +106,8 @@ class MyTestCase(unittest.TestCase):
     def test5_request_vaccination_ok(self):
         """
 
-        DOCSTRING
+        Test que resulta correcto al comprobar todos los datos
+        (correctos) de un usuario.
 
         """
         # Si ya existe el fichero json, se borra
@@ -136,7 +144,9 @@ class MyTestCase(unittest.TestCase):
     def test6_request_vaccination_ok(self):
         """
 
-        DOCSTRING
+        Test que resulta correcto al comprobar todos los datos (correctos)
+        de otro usuario. Test similar al anterior pero con otro conjunto
+        de datos.
 
         """
         #Abrimos el fichero para comprobar las entradas después
@@ -177,7 +187,8 @@ class MyTestCase(unittest.TestCase):
     def test7_request_vaccination_notok_reg1(self):
         """
 
-        DOCSTRING
+        Test que comprueba que se devuelve un error cuando el
+        "registration type" no es ni "Familiar" ni "Regular.
 
         """
         my_request = VaccineManager()
@@ -190,7 +201,9 @@ class MyTestCase(unittest.TestCase):
     def test8_request_vaccination_notok_reg2(self):
         """
 
-        DOCSTRING
+        Test que comprueba que se devuelve un error cuando el
+        "registration type" no es ni "Familiar" ni "Regular. Para
+        este test se utiliza un número como "registration type"
 
         """
         my_request = VaccineManager()
@@ -203,7 +216,8 @@ class MyTestCase(unittest.TestCase):
     def test9_request_vaccination_notok_name1(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando se introduce un nombre cuya longitud
+        es superior a los 30 caracteres.
 
         """
         my_request = VaccineManager()
@@ -215,7 +229,8 @@ class MyTestCase(unittest.TestCase):
     def test10_request_vaccination_notok_name3(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando el formato del nombre NO es correcto.
+        El formato correcto es <name>+<surname>
 
         """
         my_request = VaccineManager()
@@ -227,7 +242,8 @@ class MyTestCase(unittest.TestCase):
     def test11_request_vaccination_notok_name4(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando el formato del nombre NO es correcto.
+        En este caso el nombre tiene demasiados términos.
 
         """
         my_request = VaccineManager()
@@ -239,7 +255,7 @@ class MyTestCase(unittest.TestCase):
     def test12_request_vaccination_notok_number1(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando el teléfono introducido es demasiado corto.
 
         """
         my_request = VaccineManager()
@@ -252,7 +268,7 @@ class MyTestCase(unittest.TestCase):
     def test13_request_vaccination_notok_number2(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando el teléfono introducido es demasiado largo.
 
         """
         my_request = VaccineManager()
@@ -265,7 +281,8 @@ class MyTestCase(unittest.TestCase):
     def test14_request_vaccination_notok_number3(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando el teléfono no sigue el formato adecuado.
+        Se introduce un String que incluye letras para provocar dicho fallo.
 
         """
         my_request = VaccineManager()
@@ -278,7 +295,8 @@ class MyTestCase(unittest.TestCase):
     def test15_request_vaccination_notok_age1(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando la edad introducida es menor que la mínima
+        requerida (6 años). Para el test se introducirá 5 años.
 
         """
         my_request = VaccineManager()
@@ -291,7 +309,8 @@ class MyTestCase(unittest.TestCase):
     def test16_request_vaccination_notok_age2(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando la edad introducida es mayor a la máxima permitida.
+        Para el test se utilizará 126 años (siendo el límite 125 años).
 
         """
         my_request = VaccineManager()
@@ -304,7 +323,9 @@ class MyTestCase(unittest.TestCase):
     def test17_request_vaccination_notok_age2(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error cuando la edad introducida no sigue el formato adecuado,
+        introduciendo decimales en el valor (el formato NO debe contener decimales, será
+        un String únicamente con números).
 
         """
         my_request = VaccineManager()
@@ -317,7 +338,8 @@ class MyTestCase(unittest.TestCase):
     def test18_request_vaccination_ok(self):
         """
 
-        DOCSTRING
+        Test que comprueba la correcta validación de los datos de un usuario nuevo.
+        Este test es similar al número 1.
 
         """
         # Si ya existe el fichero json, se borra
@@ -358,7 +380,8 @@ class MyTestCase(unittest.TestCase):
     def test19_request_vaccination_ok(self):
         """
 
-        DOCSTRING
+        Test que resulta exitoso al introducir un usuario con los valores límite
+        de nombre (30 caracteres) y edad (mínimo 6 años)
 
         """
         # Si ya existe el fichero json, se borra
@@ -399,7 +422,9 @@ class MyTestCase(unittest.TestCase):
     def test20_request_vaccination_ok(self):
         """
 
-        DOCSTRING
+        Test que resulta exitoso al introducir un usuario con los valores límite
+        de nombre (en este caso, el nombre mínimo: 1 caracter por nombre y 1 caracter
+        por apellido) y la edad máxima (125 años).
 
         """
         # Si ya existe el fichero json, se borra
@@ -440,7 +465,8 @@ class MyTestCase(unittest.TestCase):
     def test21_request_vaccination_ok(self):
         """
 
-        DOCSTRING
+        Test que resulta exitoso al introducir un mismo paciente con el
+        "registration type" regular y familiar, no se produce error.
 
         """
         # Si ya existe el fichero json, se borra
@@ -462,7 +488,9 @@ class MyTestCase(unittest.TestCase):
     def test22_request_vaccination_ok(self):
         """
 
-        DOCSTRING
+        Test que devuelve un error al intentar introducir un mismo paciente.
+        Al haber registrado ya al paciente con ambos "registration type",
+        el resultado al intentar introducirlo de nuevo es un error.
 
         """
         # Si ya existe el fichero json, se borra
