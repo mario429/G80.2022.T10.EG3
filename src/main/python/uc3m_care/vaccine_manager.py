@@ -13,6 +13,7 @@ from pathlib import Path
 import json
 from .vaccine_management_exception import VaccineManagementException
 from .vaccine_patient_register import VaccinePatientRegister
+from .vaccination_appoinment import VaccinationAppoinment
 
 class VaccineManager:
     """
@@ -142,4 +143,37 @@ class VaccineManager:
         return new_client.patient_system_id
 
     def get_vaccine_date(self, input_file):
-        pass
+
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store = json_path + "store_patient.json"
+        #Abrimos el fichero de entrada para comprobar los datos
+
+        with open(input_file, "r", encoding="utf-8", newline="") as file:
+            patient_data = json.load(file)
+        #############################COMPROBACIONES##################################################
+
+        #Abrimos el fichero que guarda los pacientes para ver si se encuentra el valor
+        with open(file_store, "r", encoding="utf-8", newline="") as file:
+            data_list = json.load(file)
+
+        client_system_id = patient_data["PatientSystemID"]
+        client_phone_number = patient_data["ContactPhoneNumber"]
+
+
+        found = False
+        for item in data_list:
+            if item["_VaccinePatientRegister__patient_sys_id"] == client_system_id and item['_VaccinePatientRegister__phone_number'] == client_phone_number:
+                found = True
+                guid = item['_VaccinePatientRegister__patient_id']
+                break
+        if not found:
+            raise VaccineManagementException("Patient does not exist")
+
+        #Como se ha encontrado, se crea instancia de VaccinationAppointment
+
+        new_date = VaccinationAppoinment(guid, client_system_id, client_phone_number, 10)
+
+        return new_date.vaccination_signature
+
+
+
