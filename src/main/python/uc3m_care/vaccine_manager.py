@@ -140,7 +140,7 @@ class VaccineManager:
                 json.dump(data_list, file, indent=2)
         except:
             raise VaccineManagementException("Wrong file or path")
-        return new_client.patient_system_id
+        return new_client.get_patient_system_id()
 
     def get_vaccine_date(self, input_file):
 
@@ -149,8 +149,29 @@ class VaccineManager:
         #Abrimos el fichero de entrada para comprobar los datos
 
         with open(input_file, "r", encoding="utf-8", newline="") as file:
-            patient_data = json.load(file)
+            try:
+                patient_data = json.load(file)
+            except:
+                raise VaccineManagementException("Wrong json file format")
         #############################COMPROBACIONES##################################################
+        if type(patient_data) != dict or len(patient_data.keys()) < 2:
+            raise VaccineManagementException("Wrong json file format")
+        dict_keys = list(patient_data.keys())
+        if dict_keys[0] != "PatientSystemID" or dict_keys[1] != "ContactPhoneNumber":
+            raise VaccineManagementException("Wrong json file format")
+
+        good_id = re.compile(r"[0-9A-Fa-f]{32}")
+        test_id = good_id.fullmatch(patient_data["PatientSystemID"])
+        if not test_id:
+            raise VaccineManagementException("Wrong json file format")
+
+
+        good_number = re.compile(r"[0-9]{9}")
+        test_number = good_number.fullmatch(patient_data["ContactPhoneNumber"])
+        if not test_number:
+            raise VaccineManagementException("Wrong json file format")
+
+
 
         #Abrimos el fichero que guarda los pacientes para ver si se encuentra el valor
         with open(file_store, "r", encoding="utf-8", newline="") as file:
@@ -158,7 +179,6 @@ class VaccineManager:
 
         client_system_id = patient_data["PatientSystemID"]
         client_phone_number = patient_data["ContactPhoneNumber"]
-
 
         found = False
         for item in data_list:
@@ -173,6 +193,33 @@ class VaccineManager:
 
         new_date = VaccinationAppoinment(guid, client_system_id, client_phone_number, 10)
 
+        #Comprobamos que el cliente no tiene ya una cita
+
+        file_store_date = json_path + "store_patient_date.json"
+
+        try:
+            with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
+                data_list = json.load(file)
+        except FileNotFoundError:
+            data_list = []
+        except json.JSONDecodeError:
+            raise VaccineManagementException("JSON Decode Error - Wrong JSON Format")
+        found = False
+        for item in data_list:
+            if item["_VaccinationAppoinment__patient_sys_id"] == client_system_id:
+                found = True
+        if found:
+            raise VaccineManagementException("Error: patient already has an appointment.")
+        ##################################################
+
+        #Se le añade al fichero
+        data_list.append(new_date.__dict__)
+        try:
+            with open(file_store_date, "w", encoding="utf-8", newline="") as file:
+                json.dump(data_list, file, indent=2)
+        except:
+            raise VaccineManagementException("Wrong file or path")
+        print(data_list)
         return new_date.vaccination_signature
 
 

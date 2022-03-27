@@ -94,7 +94,7 @@ class VaccinePatientRegister:
     def patient_system_id(self):
         """
 
-        Returns the md5 signature. Does not take into account the time
+        Returns the md5 signature.
 
         """
         return hashlib.md5(self.__str__().encode()).hexdigest()
@@ -107,3 +107,10 @@ class VaccinePatientRegister:
 
         """
         return self.__age
+    def get_patient_system_id(self):
+        """
+
+        Getter necesario para que no haya errores al devolver la ID
+
+        """
+        return self.__patient_sys_id
