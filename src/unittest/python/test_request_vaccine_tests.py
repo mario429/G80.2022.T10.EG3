@@ -35,7 +35,7 @@ class MyTestCase(unittest.TestCase):
         # Se comprueba que el código devuelto es correcto
         value = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
             "Jose Johnson", "923412921", "45")
-        self.assertEqual("5c6824ff32c328161e44d963d4f95c7f", value)
+        self.assertEqual("1c3349220ec3a91d8848c03e5d272d93", value)
 
         # Comprobamos el contenido del fichero json
         with open(file_store, "r", encoding="utf-8", newline="") as file:
@@ -112,7 +112,7 @@ class MyTestCase(unittest.TestCase):
         my_request = VaccineManager()
         value = my_request.request_vaccination_id("567f65de-5c03-4e8e-ae50-aa6b49b6893f",
         "Familiar", "Alfredo Sánchez", "666111222", "12")
-        self.assertEqual("598cb2e44f90d0452f901f63a6a97579", value)
+        self.assertEqual("d77b5fbdfacb77fffb071f0347300431", value)
 
         # Comprobamos el contenido del fichero json
         with open(file_store, "r", encoding="utf-8", newline="") as file:
@@ -149,7 +149,7 @@ class MyTestCase(unittest.TestCase):
         my_request = VaccineManager()
         value = my_request.request_vaccination_id("eb6cb027-08e9-4d11-bc85-dabf844bae22",
             "Familiar", "Pedro Soni", "552555222", "56")
-        self.assertEqual("5db2aae9bbec96f00e2dfeabd10b6ba7", value)
+        self.assertEqual("339690edd9f6d3b9501518116bb8cbb7", value)
 
         #Comprobamos el contenido del fichero json
         with open(file_store, "r", encoding="utf-8", newline="") as file:
@@ -330,7 +330,7 @@ class MyTestCase(unittest.TestCase):
         my_request = VaccineManager()
         value = my_request.request_vaccination_id("cb3dd087-0868-4203-bbbd-5e7899fbbe2a", "Regular",
             "Rosa García", "678923456", "34")
-        self.assertEqual("7c40f9678455c60012361935258f8f8f", value)
+        self.assertEqual("e22e43ec3b15bf6e4ff68d69a06801c1", value)
 
         # Comprobamos el contenido del fichero json
         with open(file_store, "r", encoding="utf-8", newline="") as file:
@@ -371,7 +371,7 @@ class MyTestCase(unittest.TestCase):
         my_request = VaccineManager()
         value = my_request.request_vaccination_id("31e68fe8-13dd-4dd3-9b81-69a66cb80a91",
             "Familiar", "Esternilocideo Masterianosones", "000000000", "6")
-        self.assertEqual("07b2ec8ee2978df11669d141dfd89deb", value)
+        self.assertEqual("427cbd81f65070a11f5b351fba47997d", value)
 
         # Comprobamos el contenido del fichero json
         with open(file_store, "r", encoding="utf-8", newline="") as file:
@@ -412,7 +412,7 @@ class MyTestCase(unittest.TestCase):
         my_request = VaccineManager()
         value = my_request.request_vaccination_id("9f159456-9a1c-4bd4-a1e3-b2f181c86b6c", "Regular",
             "C J", "918234765", "125")
-        self.assertEqual("bba81a26c24676a407442b0f091f7bd4", value)
+        self.assertEqual("28de5872a733084271c51fb076a2c965", value)
 
         # Comprobamos el contenido del fichero json
         with open(file_store, "r", encoding="utf-8", newline="") as file:

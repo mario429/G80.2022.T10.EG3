@@ -21,6 +21,7 @@ class VaccinePatientRegister:
         self.__age = age
         justnow = datetime.utcnow()
         self.__time_stamp = datetime.timestamp(justnow)
+        self.__patient_sys_id = self.patient_system_id
 
     def __str__(self):
         return "VaccinePatientRegister:" + json.dumps(self.__dict__)

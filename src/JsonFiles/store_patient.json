@@ -5,6 +5,7 @@
     "_VaccinePatientRegister__registration_type": "Familiar",
     "_VaccinePatientRegister__phone_number": "552555222",
     "_VaccinePatientRegister__age": "56",
-    "_VaccinePatientRegister__time_stamp": 1654473600.0
+    "_VaccinePatientRegister__time_stamp": 1654473600.0,
+    "_VaccinePatientRegister__patient_sys_id": "5db2aae9bbec96f00e2dfeabd10b6ba7"
   }
 ]

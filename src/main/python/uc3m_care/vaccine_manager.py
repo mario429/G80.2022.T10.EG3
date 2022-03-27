@@ -100,6 +100,7 @@ class VaccineManager:
             raise VaccineManagementException("Error: invalid age format")
         if int(age) not in range (6, 126):
             raise VaccineManagementException("Error: age must be between 6 and 125")
+
         new_client = VaccinePatientRegister(patient_id, name_surname,
             registration_type, phone_number, age)
 
@@ -132,3 +133,6 @@ class VaccineManager:
         except:
             raise VaccineManagementException("Wrong file or path") from ex
         return new_client.patient_system_id
+
+    def get_vaccine_date(self, input_file):
+        pass
