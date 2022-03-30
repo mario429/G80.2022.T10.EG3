@@ -716,7 +716,124 @@ class MyTestCase2(unittest.TestCase):
             hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
         self.assertEqual(hash_original, hash_new)
 
+    def test_sin_comilla5(self):
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store_date = json_path + "store_patient_date.json"
+        file_test = json_path + "tests_get_vaccine_date/test_sincomilla5.json"
+        #Abrimos el fichero original para comprobar luego que no cambia
+        with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        #Comprobamos error
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_request = VaccineManager()
+            my_request.get_vaccine_date(file_test)
+        self.assertEqual("Wrong json file format", c_m.exception.message)
+        #Vemos que no cambia el fichero
+        with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        self.assertEqual(hash_original, hash_new)
 
+    def test_comilla5_doble(self):
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store_date = json_path + "store_patient_date.json"
+        file_test = json_path + "tests_get_vaccine_date/test_comilla5doble.json"
+        #Abrimos el fichero original para comprobar luego que no cambia
+        with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        #Comprobamos error
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_request = VaccineManager()
+            my_request.get_vaccine_date(file_test)
+        self.assertEqual("Wrong json file format", c_m.exception.message)
+        #Vemos que no cambia el fichero
+        with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        self.assertEqual(hash_original, hash_new)
+
+    def test_sin_comilla6(self):
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store_date = json_path + "store_patient_date.json"
+        file_test = json_path + "tests_get_vaccine_date/test_sincomilla6.json"
+        # Abrimos el fichero original para comprobar luego que no cambia
+        with open(file_store_date, "r", encoding="utf-8", newline="") as file_org:
+            hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        # Comprobamos error
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_request = VaccineManager()
+            my_request.get_vaccine_date(file_test)
+        self.assertEqual("Wrong json file format", c_m.exception.message)
+        # Vemos que no cambia el fichero
+        with open(file_store_date, "r", encoding="utf-8", newline="") as file_org:
+            hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        self.assertEqual(hash_original, hash_new)
+
+    def test_sin_comilla7(self):
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store_date = json_path + "store_patient_date.json"
+        file_test = json_path + "tests_get_vaccine_date/test_sincomilla7.json"
+        # Abrimos el fichero original para comprobar luego que no cambia
+        with open(file_store_date, "r", encoding="utf-8", newline="") as file_org:
+            hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        # Comprobamos error
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_request = VaccineManager()
+            my_request.get_vaccine_date(file_test)
+        self.assertEqual("Wrong json file format", c_m.exception.message)
+        # Vemos que no cambia el fichero
+        with open(file_store_date, "r", encoding="utf-8", newline="") as file_org:
+            hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        self.assertEqual(hash_original, hash_new)
+
+    def test_comilla7_doble(self):
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store_date = json_path + "store_patient_date.json"
+        file_test = json_path + "tests_get_vaccine_date/test_comilla7doble.json"
+        # Abrimos el fichero original para comprobar luego que no cambia
+        with open(file_store_date, "r", encoding="utf-8", newline="") as file_org:
+            hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        # Comprobamos error
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_request = VaccineManager()
+            my_request.get_vaccine_date(file_test)
+        self.assertEqual("Wrong json file format", c_m.exception.message)
+        # Vemos que no cambia el fichero
+        with open(file_store_date, "r", encoding="utf-8", newline="") as file_org:
+            hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        self.assertEqual(hash_original, hash_new)
+
+    def test_sin_comilla8(self):
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store_date = json_path + "store_patient_date.json"
+        file_test = json_path + "tests_get_vaccine_date/test_sincomilla8.json"
+        #Abrimos el fichero original para comprobar luego que no cambia
+        with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        #Comprobamos error
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_request = VaccineManager()
+            my_request.get_vaccine_date(file_test)
+        self.assertEqual("Wrong json file format", c_m.exception.message)
+        #Vemos que no cambia el fichero
+        with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        self.assertEqual(hash_original, hash_new)
+
+    def test_comilla8_doble(self):
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store_date = json_path + "store_patient_date.json"
+        file_test = json_path + "tests_get_vaccine_date/test_comilla8doble.json"
+        #Abrimos el fichero original para comprobar luego que no cambia
+        with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        #Comprobamos error
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_request = VaccineManager()
+            my_request.get_vaccine_date(file_test)
+        self.assertEqual("Wrong json file format", c_m.exception.message)
+        #Vemos que no cambia el fichero
+        with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
+        self.assertEqual(hash_original, hash_new)
 
 
 
