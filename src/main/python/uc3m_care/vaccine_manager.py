@@ -80,13 +80,6 @@ class VaccineManager:
         if not test_name:
             raise VaccineManagementException("Error: wrong name format")
 
-        acceptable = ["á", "é", "í", "ó", "ú", "ñ", "ç", "Á", "É", "Í", "Ó", "Ú", "ü"]
-
-        # Comprobamos si hay caracteres no válidos
-        for i in name_surname:
-            if not i.isalpha() and i not in acceptable and i!= " ":
-                raise VaccineManagementException("Error: wrong name format")
-
         # Errores con phone_number
         if not phone_number or type(phone_number) != str:
             raise VaccineManagementException("Error: invalid phone number format")
