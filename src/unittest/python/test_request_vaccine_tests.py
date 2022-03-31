@@ -224,7 +224,7 @@ class MyTestCase(unittest.TestCase):
         my_request = VaccineManager()
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Federicogonzaloramonperecianorodríguez", "923412921", "45")
+                "Regular", "UnNombreDeMas TreintaCaracteres", "923412921", "45")
         self.assertEqual("Error: name is too long", c_m.exception.message)
 
     def test10_request_vaccination_notok_name3(self):
@@ -262,7 +262,7 @@ class MyTestCase(unittest.TestCase):
         my_request = VaccineManager()
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "99123", "45")
+                "Regular", "Jose Johnson", "12345678", "45")
         self.assertEqual("Error: number must "
                          "contain 9 characters and only digits", c_m.exception.message)
 
@@ -275,7 +275,7 @@ class MyTestCase(unittest.TestCase):
         my_request = VaccineManager()
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
-                "Regular", "Jose Johnson", "23424534324", "45")
+                "Regular", "Jose Johnson", "9123456789", "45")
         self.assertEqual("Error: number must contain "
                          "9 characters and only digits",c_m.exception.message)
 

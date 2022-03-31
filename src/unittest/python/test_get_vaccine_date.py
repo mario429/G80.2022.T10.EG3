@@ -55,6 +55,7 @@ class MyTestCase2(unittest.TestCase):
 
     def test_all(self):
         """
+
         Este método testea todos los ficheros json de formato incorrecto.
 
         """
@@ -67,13 +68,21 @@ class MyTestCase2(unittest.TestCase):
                 print("OK!")
 
     def test_incorrect(self, test_path = None):
+        """
+
+        Test auxiliar a test_all.
+
+        """
         if test_path: #Si no se ha llamado con un valor de test_path, se ignora el test
+
             json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
             file_store_date = json_path + "store_patient_date.json"
             file_test = json_path + "tests_get_vaccine_date/" + test_path
             #Abrimos el fichero original para comprobar luego que no cambia
+
             with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
                 hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
+
             #Comprobamos error
             with self.assertRaises(VaccineManagementException) as c_m:
                 my_request = VaccineManager()
