@@ -32,7 +32,7 @@ class VaccineManager:
     def validate_guid(patient_id):
         """
 
-        RETURN TRUE IF THE GUID v4 IS RIGHT, OR FALSE IN OTHER CASE
+        Return True if the GUID v4 is right, or false in other case
 
         """
         valid_guid = re.compile (r'^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-'
@@ -47,27 +47,28 @@ class VaccineManager:
             raise VaccineManagementException("Error: invalid UUID version")
         return True
 
+
     @staticmethod
-    def validate_patient_sys_id(patient_sys_id):
+    def validate_date_signature(patient_sys_id):
         """
 
-        RETURNS TRUE IF THE PATIENT'S SIGNATURE PASSES ALL VALIDATION TESTS
+        Returns True if the patient's date_signature is fully validated
 
         """
         # Check data type
         if not patient_sys_id or type(patient_sys_id) != str:
-            raise VaccineManagementException("Error: invalid Patient System ID --> Signature's data type is not String")
+            raise VaccineManagementException("Error: invalid Patient's date_signature' --> Signature's data type is not String")
 
-        # Check the length of the signature (must be exactly 32 bytes)
+        # Check the length of the signature (must be exactly 64 bytes)
         patient_sys_id_length = len(patient_sys_id)
-        if patient_sys_id_length != 32:
-            raise VaccineManagementException("Error: invalid Patient System ID --> Signature must have 32 bytes")
+        if patient_sys_id_length != 64:
+            raise VaccineManagementException("Error: invalid Patient's date_signature --> Signature must have 64 bytes")
 
         # Check the structure with regex
-        valid_signature_regex = re.compile(r'[0-9a-f]{32}', re.IGNORECASE)
+        valid_signature_regex = re.compile(r'[0-9a-f]{64}', re.IGNORECASE)
         check_signature = valid_signature_regex.fullmatch(patient_sys_id)
         if not check_signature:
-            raise VaccineManagementException("Error: invalid Patient System ID --> Siganture does not match with regex")
+            raise VaccineManagementException("Error: invalid Patient's date_signature' --> Signature does not match with regex")
         return True
 
 
@@ -159,10 +160,16 @@ class VaccineManager:
             raise VaccineManagementException("Wrong file or path")
         return new_client.get_patient_system_id()
 
-    def get_vaccine_date(self, input_file):
 
+    def get_vaccine_date(self, input_file):
+        """
+
+        DOCSTRING
+
+        """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
         file_store = json_path + "store_patient.json"
+
         #Abrimos el fichero de entrada para comprobar los datos
 
         with open(input_file, "r", encoding="utf-8", newline="") as file:
@@ -170,7 +177,9 @@ class VaccineManager:
                 patient_data = json.load(file)
             except:
                 raise VaccineManagementException("Wrong json file format")
-        #############################COMPROBACIONES##################################################
+
+        #############################COMPROBACIONES#############################
+
         if type(patient_data) != dict or len(patient_data.keys()) < 2:
             raise VaccineManagementException("Wrong json file format")
         dict_keys = list(patient_data.keys())
@@ -187,8 +196,6 @@ class VaccineManager:
         test_number = good_number.fullmatch(patient_data["ContactPhoneNumber"])
         if not test_number:
             raise VaccineManagementException("Wrong json file format")
-
-
 
         #Abrimos el fichero que guarda los pacientes para ver si se encuentra el valor
         with open(file_store, "r", encoding="utf-8", newline="") as file:
@@ -239,6 +246,13 @@ class VaccineManager:
         print(data_list)
         return new_date.vaccination_signature
 
-    # def vaccine_patient(self, date_signature):
+
+    def vaccine_patient(self, date_signature):
+        """
+
+        Method that validates and searches a patient given a date_signature
+
+        """
+        pass
 
 
