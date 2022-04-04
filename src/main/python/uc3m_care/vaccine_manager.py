@@ -47,7 +47,7 @@ class VaccineManager:
             raise VaccineManagementException("Error: invalid UUID version")
         return True
 
-    @static_method
+    @staticmethod
     def validate_patient_sys_id(patient_sys_id):
         """
 
