@@ -63,11 +63,11 @@ class MyTestCase2(unittest.TestCase):
         files = os.listdir(str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/tests_get_vaccine_date/")
         for i in files:
             if (i != "test1_get_vaccine_date_ok.json"):
-                print ("Testing " + i)
+                print("Testing " + i)
                 self.test_incorrect(i)
                 print("OK!")
 
-    def test_incorrect(self, test_path = None):
+    def test_incorrect(self, test_path=None):
         """
 
         Test auxiliar a test_all.

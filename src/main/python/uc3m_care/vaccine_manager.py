@@ -279,21 +279,25 @@ class VaccineManager:
         for item in data_list:
             if item["_VaccinationAppoinment__date_signature"] == date_signature:
                 date_founded = True
-                issued_date = item["_VaccinationAppoinment__issued_at"]
+                appointment_date = item["_VaccinationAppoinment__appoinment_date"]
         if not date_founded:
             raise VaccineManagementException("Error: date_signature doesn't exist in the system")
 
         # If we found date_signature in the JSON file the we need to check if the vaccination date is today
 
         actual_date = datetime.timestamp(datetime.utcnow())
-        if actual_date != issued_date:
+        # print(appointment_date)
+        # print(actual_date)
+        print(actual_date)
+        print(appointment_date)
+        if actual_date != appointment_date:
             raise VaccineManagementException("Error: actual date doesn't match with the issued vaccination date")
 
         # At this point, if the issued_date is equal to actual_date, the system creates a new store with the vaccination data
 
         try:
-            with open(str(json_path+"store_vaccine_patient"), "w", encoding="utf-8", newline="") as file:
-                json.dump({"date_signature": date_signature, "vaccine_date": actual_date}, file, indent=2)
+            with open(str(json_path+"store_vaccine_patient.json"), "w", encoding="utf-8", newline="") as file:
+                json.dump([{str(date_signature): actual_date}], file, indent=2)
         except:
             raise VaccineManagementException("Wrong file or path")
         return True
