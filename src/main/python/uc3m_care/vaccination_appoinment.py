@@ -9,7 +9,7 @@ import hashlib
 class VaccinationAppoinment():
     """
 
-    Class representing an appoinment  for the vaccination of a patient
+    Class representing an appointment  for the vaccination of a patient
 
     """
 

@@ -47,6 +47,30 @@ class VaccineManager:
             raise VaccineManagementException("Error: invalid UUID version")
         return True
 
+    @static_method
+    def validate_patient_sys_id(patient_sys_id):
+        """
+
+        RETURNS TRUE IF THE PATIENT'S SIGNATURE PASSES ALL VALIDATION TESTS
+
+        """
+        # Check data type
+        if not patient_sys_id or type(patient_sys_id) != str:
+            raise VaccineManagementException("Error: invalid Patient System ID --> Signature's data type is not String")
+
+        # Check the length of the signature (must be exactly 32 bytes)
+        patient_sys_id_length = len(patient_sys_id)
+        if patient_sys_id_length != 32:
+            raise VaccineManagementException("Error: invalid Patient System ID --> Signature must have 32 bytes")
+
+        # Check the structure with regex
+        valid_signature_regex = re.compile(r'[0-9a-f]{32}', re.IGNORECASE)
+        check_signature = valid_signature_regex.fullmatch(patient_sys_id)
+        if not check_signature:
+            raise VaccineManagementException("Error: invalid Patient System ID --> Siganture does not match with regex")
+        return True
+
+
     def request_vaccination_id(self, patient_id, registration_type,
         name_surname, phone_number, age):
         """
@@ -215,5 +239,6 @@ class VaccineManager:
         print(data_list)
         return new_date.vaccination_signature
 
+    # def vaccine_patient(self, date_signature):
 
 
