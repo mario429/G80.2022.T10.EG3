@@ -9,8 +9,9 @@ Module for the management of the vaccination process
 
 """
 import re
-from pathlib import Path
 import json
+from datetime import datetime
+from pathlib import Path
 from .vaccine_management_exception import VaccineManagementException
 from .vaccine_patient_register import VaccinePatientRegister
 from .vaccination_appoinment import VaccinationAppoinment
@@ -253,6 +254,46 @@ class VaccineManager:
         Method that validates and searches a patient given a date_signature
 
         """
-        pass
+        # First we need to validate the date_signature argument
+        self.validate_date_signature(date_signature)
 
+        # Then we need to check if date_signature exists in store_patient_date
+        json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
+        file_store_date = json_path + "store_patient_date.json"
 
+        # We check if there are any file errors
+
+        try:
+            with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
+                data_list = json.load(file)
+
+        except FileNotFoundError:
+            data_list = []
+
+        except json.JSONDecodeError:
+            raise VaccineManagementException("JSON Decode Error - Wrong JSON Format")
+
+        # Now we traverse the JSON file searching for the date_signature
+
+        date_founded = False
+        for item in data_list:
+            if item["_VaccinationAppoinment__date_signature"] == date_signature:
+                date_founded = True
+                issued_date = item["_VaccinationAppoinment__issued_at"]
+        if not date_founded:
+            raise VaccineManagementException("Error: date_signature doesn't exist in the system")
+
+        # If we found date_signature in the JSON file the we need to check if the vaccination date is today
+
+        actual_date = datetime.timestamp(datetime.utcnow())
+        if actual_date != issued_date:
+            raise VaccineManagementException("Error: actual date doesn't match with the issued vaccination date")
+
+        # At this point, if the issued_date is equal to actual_date, the system creates a new store with the vaccination data
+
+        try:
+            with open(str(json_path+"store_vaccine_patient"), "w", encoding="utf-8", newline="") as file:
+                json.dump({"date_signature": date_signature, "vaccine_date": actual_date}, file, indent=2)
+        except:
+            raise VaccineManagementException("Wrong file or path")
+        return True

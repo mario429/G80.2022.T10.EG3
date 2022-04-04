@@ -29,9 +29,10 @@ class VaccinationAppoinment():
         if days == 0:
             self.__appoinment_date = 0
         else:
-            # timestamp is represneted in seconds.microseconds
-            # age must be expressed in senconds to be added to the timestap
+            # timestamp is represented in seconds.microseconds
+            # age must be expressed in seconds to be added to the timestamp
             self.__appoinment_date = self.__issued_at + (days * 24 * 60 * 60)
+        self.__date_signature = self.vaccination_signature
 
     def signature_string(self):
         return self.__signature_string()
