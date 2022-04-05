@@ -8,6 +8,7 @@ MODULE: access_request. Contains the access request class
 import hashlib
 import json
 from datetime import datetime
+
 class VaccinePatientRegister:
     """
 

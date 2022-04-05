@@ -10,6 +10,7 @@ Module for the management of the vaccination process
 """
 import re
 import json
+from freezegun import freeze_time
 from datetime import datetime
 from pathlib import Path
 from .vaccine_management_exception import VaccineManagementException
@@ -246,14 +247,17 @@ class VaccineManager:
                 json.dump(data_list, file, indent=2)
         except:
             raise VaccineManagementException("Wrong file or path")
-        print(data_list)
+        # print(data_list)
         return new_date.vaccination_signature
 
 
-    def vaccine_patient(self, date_signature):
+    @freeze_time("2022-06-16")
+    def vaccine_patient(self, date_signature, date_for_test=None):
         """
 
-        Method that validates and searches a patient given a date_signature
+        Method that validates and searches a patient given a date_signature.
+        The date_for_test is a testing argument, is not meant to be used in
+        real-life executions.
 
         """
         # First we need to validate the date_signature argument
@@ -280,10 +284,7 @@ class VaccineManager:
                 data_list = json.load(file)
 
         except FileNotFoundError:
-            data_list = []
-
-        except json.JSONDecodeError:
-            raise VaccineManagementException("JSON Decode Error - Wrong JSON Format")
+            raise VaccineManagementException("Error: File not found")
 
         # Now we traverse the JSON file searching for the date_signature
         date_founded = False
@@ -294,12 +295,17 @@ class VaccineManager:
         if not date_founded:
             raise VaccineManagementException("Error: date_signature doesn't exist in the system")
 
-        # If we found date_signature in the JSON file the we
+        # If we found date_signature in the JSON file then we
         # need to check if the vaccination date is today
         actual_date = datetime.timestamp(datetime.utcnow())
-        if actual_date != appointment_date:
-            raise VaccineManagementException("Error: actual date doesn't match with "
-                "the issued vaccination date")
+        if date_for_test is None:
+            if actual_date != appointment_date:
+                raise VaccineManagementException("Error: actual date doesn't match with "
+                    "the issued vaccination date")
+        else:
+            if date_for_test != appointment_date:
+                raise VaccineManagementException("Error: actual date doesn't match with "
+                    "the issued vaccination date")
 
         # At this point, if the issued_date is equal to actual_date,
         # the system creates a new store with the vaccination data

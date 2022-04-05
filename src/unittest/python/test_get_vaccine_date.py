@@ -81,7 +81,7 @@ class MyTestCase2(unittest.TestCase):
             file_test = json_path + "tests_get_vaccine_date/" + test_path
             #Abrimos el fichero original para comprobar luego que no cambia
 
-            with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            with open(file_store_date, "r", encoding="utf-8", newline="") as file_org:
                 hash_original = hashlib.md5(file_org.__str__().encode()).hexdigest()
 
             #Comprobamos error
@@ -90,7 +90,7 @@ class MyTestCase2(unittest.TestCase):
                 my_request.get_vaccine_date(file_test)
             self.assertEqual("Wrong json file format", c_m.exception.message)
             #Vemos que no cambia el fichero
-            with open(file_store_date, "r", encoding = "utf-8", newline="") as file_org:
+            with open(file_store_date, "r", encoding="utf-8", newline="") as file_org:
                 hash_new = hashlib.md5(file_org.__str__().encode()).hexdigest()
             self.assertEqual(hash_original, hash_new)
 
