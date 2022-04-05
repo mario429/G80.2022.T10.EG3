@@ -18,7 +18,7 @@ class VaccineManagementException(Exception):
     def message(self):
         """
 
-        gets the message value
+        Gets the message value
 
         """
         return self.__message

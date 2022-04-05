@@ -110,7 +110,7 @@ class VaccinePatientRegister:
     def get_patient_system_id(self):
         """
 
-        Getter necesario para que no haya errores al devolver la ID
+        Necessary getter to avoid errors when returning the ID
 
         """
         return self.__patient_sys_id

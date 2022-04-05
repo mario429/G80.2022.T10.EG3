@@ -1,3 +1,4 @@
+# pylint: disable=R0902
 """
 
 Contains the class Vaccination Appoinment
@@ -35,6 +36,11 @@ class VaccinationAppoinment():
         self.__date_signature = self.vaccination_signature
 
     def signature_string(self):
+        """
+
+        Returns the hash of the signature (result of calling __signature_string())
+
+        """
         return self.__signature_string()
 
     def __signature_string(self):
@@ -90,7 +96,7 @@ class VaccinationAppoinment():
     def vaccination_signature(self):
         """
 
-        Returns the sha256 signature of the date
+        Returns the SHA256 signature of the date
 
         """
         return hashlib.sha256(self.__signature_string().encode()).hexdigest()
@@ -116,3 +122,12 @@ class VaccinationAppoinment():
 
         """
         return self.__appoinment_date
+
+    @property
+    def date_signature(self):
+        """
+
+        Getter method for date_signature attribute
+
+        """
+        return self.__date_signature

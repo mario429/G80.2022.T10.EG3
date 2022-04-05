@@ -58,18 +58,21 @@ class VaccineManager:
         """
         # Check data type
         if not patient_sys_id or type(patient_sys_id) != str:
-            raise VaccineManagementException("Error: invalid Patient's date_signature' --> Signature's data type is not String")
+            raise VaccineManagementException("Error: invalid Patient's date_signature' "
+                "--> Signature's data type is not String")
 
         # Check the length of the signature (must be exactly 64 bytes)
         patient_sys_id_length = len(patient_sys_id)
         if patient_sys_id_length != 64:
-            raise VaccineManagementException("Error: invalid Patient's date_signature --> Signature must have 64 bytes")
+            raise VaccineManagementException("Error: invalid Patient's date_signature "
+                "--> Signature must have 64 bytes")
 
         # Check the structure with regex
         valid_signature_regex = re.compile(r'[0-9a-f]{64}', re.IGNORECASE)
         check_signature = valid_signature_regex.fullmatch(patient_sys_id)
         if not check_signature:
-            raise VaccineManagementException("Error: invalid Patient's date_signature' --> Signature does not match with regex")
+            raise VaccineManagementException("Error: invalid Patient's date_signature' "
+                "--> Signature does not match with regex")
         return True
 
 
@@ -81,32 +84,32 @@ class VaccineManager:
 
         """
 
-        # Primero manejamos los errores con patient_id
+        # First we deal with errors related to patient_id
         if not patient_id or type(patient_id) != str:
             raise VaccineManagementException("Error: invalid UUID")
 
-        # Se encarga de ver si patient_id es un UUID v4 válido.
-        # Si no hay errores, continúa la ejecución
+        # It checks if patient_id is a valid UUID v4
+        # If there are no errors, continue with the execution
         self.validate_guid(patient_id)
 
-        # Errores con registration_type
+        # registration_type errors
         if registration_type != "Regular" and registration_type != "Familiar":
             raise VaccineManagementException("Error: registration_type must be "
                 "'Familiar' or 'Regular'")
 
-        # Errores con name_surname
+        # name_surname errors
         if not name_surname or type(name_surname) != str:
             raise VaccineManagementException("Error: wrong name format")
         if len(name_surname) > 30:
             raise VaccineManagementException("Error: name is too long")
 
-        # Comprobamos si cumple la regex con dos palabras separadas por un espacio
+        # Checks if it suits the regex "formula"
         good_name = re.compile(r'\w+\s\w+')
         test_name = good_name.fullmatch(name_surname)
         if not test_name:
             raise VaccineManagementException("Error: wrong name format")
 
-        # Errores con phone_number
+        # phone_number errors
         if not phone_number or type(phone_number) != str:
             raise VaccineManagementException("Error: invalid phone number format")
         if len(phone_number) != 9:
@@ -118,10 +121,10 @@ class VaccineManager:
             raise VaccineManagementException("Error: number must contain "
                 "9 characters and only numerals")
 
-        # Errores con age
+        # age errors
         if not age or type(age) != str:
             raise VaccineManagementException("Error: invalid age format")
-        good_age = re.compile(r"^\d+$")# Age solo tiene números
+        good_age = re.compile(r"^\d+$")# Age has only two numbers
         test_age = good_age.fullmatch(age)
         if not test_age:
             raise VaccineManagementException("Error: invalid age format")
@@ -131,7 +134,7 @@ class VaccineManager:
         new_client = VaccinePatientRegister(patient_id, name_surname,
             registration_type, phone_number, age)
 
-        # Vemos si el paciente ya está en el sistema
+        # Checks if the patient is already registered in the system
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
         file_store = json_path + "store_patient.json"
 
@@ -152,7 +155,7 @@ class VaccineManager:
         if found:
             raise VaccineManagementException("Error: patient ID already registered")
 
-        # Si estamos aquí, el paciente no se encuentra en el sistema, así que lo añadimos
+        # If we reach here, the patient is not in the system, so we add him
         data_list.append(new_client.__dict__)
         try:
             with open(file_store, "w", encoding="utf-8", newline="") as file:
@@ -165,13 +168,13 @@ class VaccineManager:
     def get_vaccine_date(self, input_file):
         """
 
-        DOCSTRING
+        Method that returns a 64-byte hash of the date
 
         """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
         file_store = json_path + "store_patient.json"
 
-        #Abrimos el fichero de entrada para comprobar los datos
+        # We open the input file to check the data
 
         with open(input_file, "r", encoding="utf-8", newline="") as file:
             try:
@@ -179,7 +182,7 @@ class VaccineManager:
             except:
                 raise VaccineManagementException("Wrong json file format")
 
-        #############################COMPROBACIONES#############################
+        #############################CHECKS#############################
 
         if type(patient_data) != dict or len(patient_data.keys()) < 2:
             raise VaccineManagementException("Wrong json file format")
@@ -192,13 +195,12 @@ class VaccineManager:
         if not test_id:
             raise VaccineManagementException("Wrong json file format")
 
-
         good_number = re.compile(r"[0-9]{9}")
         test_number = good_number.fullmatch(patient_data["ContactPhoneNumber"])
         if not test_number:
             raise VaccineManagementException("Wrong json file format")
 
-        #Abrimos el fichero que guarda los pacientes para ver si se encuentra el valor
+        # Opens the file that contains the patients to check if it finds the value
         with open(file_store, "r", encoding="utf-8", newline="") as file:
             data_list = json.load(file)
 
@@ -207,19 +209,19 @@ class VaccineManager:
 
         found = False
         for item in data_list:
-            if item["_VaccinePatientRegister__patient_sys_id"] == client_system_id and item['_VaccinePatientRegister__phone_number'] == client_phone_number:
+            if item["_VaccinePatientRegister__patient_sys_id"] == \
+                client_system_id and item['_VaccinePatientRegister__phone_number'] == \
+                    client_phone_number:
                 found = True
                 guid = item['_VaccinePatientRegister__patient_id']
                 break
         if not found:
             raise VaccineManagementException("Patient does not exist")
 
-        #Como se ha encontrado, se crea instancia de VaccinationAppointment
-
+        # It has been found, so we create an instance of VaccinationAppointment
         new_date = VaccinationAppoinment(guid, client_system_id, client_phone_number, 10)
 
-        #Comprobamos que el cliente no tiene ya una cita
-
+        # Checks if the client hasn't got an appointment already
         file_store_date = json_path + "store_patient_date.json"
 
         try:
@@ -237,7 +239,7 @@ class VaccineManager:
             raise VaccineManagementException("Error: patient already has an appointment.")
         ##################################################
 
-        #Se le añade al fichero
+        # Adding the data to the file
         data_list.append(new_date.__dict__)
         try:
             with open(file_store_date, "w", encoding="utf-8", newline="") as file:
@@ -261,9 +263,11 @@ class VaccineManager:
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
         file_store_date = json_path + "store_patient_date.json"
 
-        # If signature is valid and exists in store_patient_date we check if it already exists in store_vaccine_patient
+        # If signature is valid and exists in store_patient_date we check if it already
+        # exists in store_vaccine_patient
         try:
-            with open(str(json_path)+"store_vaccine_patient.json", 'r', encoding='utf-8', newline="") as file:
+            with open(str(json_path)+"store_vaccine_patient.json", 'r',
+                    encoding='utf-8', newline="") as file:
                 vaccine_patients = json.load(file)[0]
                 if vaccine_patients[date_signature]:
                     raise VaccineManagementException("Error: Patient has already been vaccinated")
@@ -290,14 +294,18 @@ class VaccineManager:
         if not date_founded:
             raise VaccineManagementException("Error: date_signature doesn't exist in the system")
 
-        # If we found date_signature in the JSON file the we need to check if the vaccination date is today
+        # If we found date_signature in the JSON file the we
+        # need to check if the vaccination date is today
         actual_date = datetime.timestamp(datetime.utcnow())
         if actual_date != appointment_date:
-            raise VaccineManagementException("Error: actual date doesn't match with the issued vaccination date")
+            raise VaccineManagementException("Error: actual date doesn't match with "
+                "the issued vaccination date")
 
-        # At this point, if the issued_date is equal to actual_date, the system creates a new store with the vaccination data
+        # At this point, if the issued_date is equal to actual_date,
+        # the system creates a new store with the vaccination data
         try:
-            with open(str(json_path+"store_vaccine_patient.json"), "w", encoding="utf-8", newline="") as file:
+            with open(str(json_path+"store_vaccine_patient.json"), "w",
+                    encoding="utf-8", newline="") as file:
                 json.dump([{str(date_signature): actual_date}], file, indent=2)
         except:
             raise VaccineManagementException("Wrong file or path")

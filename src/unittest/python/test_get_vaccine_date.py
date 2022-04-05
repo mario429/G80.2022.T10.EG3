@@ -37,8 +37,8 @@ class MyTestCase2(unittest.TestCase):
             os.remove(file_store_date)
 
         my_request = VaccineManager()
-        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0", "Regular",
-                                          "Jose Johnson", "923412921", "45")
+        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
+            "Regular", "Jose Johnson", "923412921", "45")
 
         value = my_request.get_vaccine_date(file_test)
         self.assertEqual(value, "f96386153f2767f620e5bacdf1d33b278fabe54bf4d43e7acb172233131de254")
@@ -60,9 +60,10 @@ class MyTestCase2(unittest.TestCase):
 
         """
         #Directorio con todos los ficheros json
-        files = os.listdir(str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/tests_get_vaccine_date/")
+        files = os.listdir(str(Path.home()) +
+            "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/tests_get_vaccine_date/")
         for i in files:
-            if (i != "test1_get_vaccine_date_ok.json"):
+            if i != "test1_get_vaccine_date_ok.json":
                 print("Testing " + i)
                 self.test_incorrect(i)
                 print("OK!")
