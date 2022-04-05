@@ -1,7 +1,7 @@
 # pylint: disable=R0904
 """
 
-Este fichero contiene todos los tests unitarios
+Este fichero contiene todos los tests unitarios asociados a request_vaccine_tests()
 
 """
 import unittest

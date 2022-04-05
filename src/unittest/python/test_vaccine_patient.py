@@ -1,13 +1,12 @@
 """
 
-DOCSTRING
+Fichero que contiene los tests asociados a la función vaccine_patient()
 
 """
 
 import unittest
 import os
 import json
-from datetime import datetime
 from pathlib import Path
 from uc3m_care import VaccineManager
 from uc3m_care import VaccineManagementException
@@ -17,13 +16,13 @@ from freezegun import freeze_time
 class MyTestCase(unittest.TestCase):
     """
 
-    This class groups the tests related to the vaccine patient method
+    Esta clase agrupa los distintos tests estructurales
 
     """
     def test1_vaccine_patient_ok(self):
         """
 
-        DOCSTRING
+        Test 1 que realiza el procedimiento de inserción de una vacunación
 
         """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
@@ -40,9 +39,9 @@ class MyTestCase(unittest.TestCase):
             os.remove(file_store_vaccine_patient)
 
         my_request = VaccineManager()
-        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
+        my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                                                     "Regular", "Jose Johnson", "923412921", "45")
-        value = my_request.get_vaccine_date(file_test)
+        my_request.get_vaccine_date(file_test)
 
         try:
             with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
@@ -51,14 +50,15 @@ class MyTestCase(unittest.TestCase):
         except FileNotFoundError:
             data_list = []
 
-        this_vaccine = my_request.vaccine_patient(data_list[0]["_VaccinationAppoinment__date_signature"])
+        this_vaccine = my_request.vaccine_patient(
+            data_list[0]["_VaccinationAppoinment__date_signature"])
         self.assertEqual(True, this_vaccine)
 
 
     def test2_vaccine_patient_vaccinated(self):
         """
 
-        DOCSTRING
+        Test 2 que falla al recibir un paciente ya vacunado
 
         """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
@@ -73,9 +73,9 @@ class MyTestCase(unittest.TestCase):
 
         my_request = VaccineManager()
 
-        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
+        my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                                                     "Regular", "Jose Johnson", "923412921", "45")
-        value = my_request.get_vaccine_date(file_test)
+        my_request.get_vaccine_date(file_test)
 
         try:
             with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
@@ -91,7 +91,7 @@ class MyTestCase(unittest.TestCase):
     def test3_vaccine_patient_invalid_signature(self):
         """
 
-        DOCSTRING
+        Test 3 que falla al recibir un hash inválido
 
         """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
@@ -108,19 +108,13 @@ class MyTestCase(unittest.TestCase):
             os.remove(file_store_vaccine_patient)
 
         my_request = VaccineManager()
-        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
+        my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                                                     "Regular", "Jose Johnson", "923412921", "45")
-        value = my_request.get_vaccine_date(file_test)
-
-        try:
-            with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
-                data_list = json.load(file)
-
-        except FileNotFoundError:
-            data_list = []
+        my_request.get_vaccine_date(file_test)
 
         with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.vaccine_patient(r"f96386153f2767f620e5bacdf1d33W278fabe54bf4d43e7acb172233131de254")
+            my_request.vaccine_patient(
+                r"f96386153f2767f620e5bacdf1d33W278fabe54bf4d43e7acb172233131de254")
         self.assertEqual("Error: invalid Patient's date_signature' --> "
             "Signature does not match with regex", c_m.exception.message)
 
@@ -128,7 +122,7 @@ class MyTestCase(unittest.TestCase):
     def test4_vaccine_patient_signature_not_found(self):
         """
 
-        DOCSTRING
+        Test 4 que falla al no encontrar el hash en el almacén
 
         """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
@@ -145,25 +139,19 @@ class MyTestCase(unittest.TestCase):
             os.remove(file_store_vaccine_patient)
 
         my_request = VaccineManager()
-        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
+        my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                                                     "Regular", "Jose Johnson", "923412921", "45")
-        value = my_request.get_vaccine_date(file_test)
-
-        try:
-            with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
-                data_list = json.load(file)
-
-        except FileNotFoundError:
-            data_list = []
+        my_request.get_vaccine_date(file_test)
 
         with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.vaccine_patient(r"f96386153f2767f620e5bacdf1d33f278fabe54bf4d43e7acb172233131de254")
+            my_request.vaccine_patient(
+                r"f96386153f2767f620e5bacdf1d33f278fabe54bf4d43e7acb172233131de254")
         self.assertEqual("Error: date_signature doesn't exist in the system", c_m.exception.message)
 
     def test5_vaccine_patient_date_not_today(self):
         """
 
-        DOCSTRING
+        Test que falla al no coincidir la fecha de vacunación con la actual (freeze)
 
         """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
@@ -181,9 +169,9 @@ class MyTestCase(unittest.TestCase):
 
         my_request = VaccineManager()
 
-        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
+        my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                                                     "Regular", "Jose Johnson", "923412921", "45")
-        value = my_request.get_vaccine_date(file_test)
+        my_request.get_vaccine_date(file_test)
 
         try:
             with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
@@ -193,15 +181,20 @@ class MyTestCase(unittest.TestCase):
             data_list = []
 
         with self.assertRaises(VaccineManagementException) as c_m:
-            my_request.vaccine_patient(data_list[0]["_VaccinationAppoinment__date_signature"], 1255337600.0)
+            my_request.vaccine_patient(
+                data_list[0]["_VaccinationAppoinment__date_signature"], 1255337600.0)
         self.assertEqual("Error: actual date doesn't match with "
             "the issued vaccination date", c_m.exception.message)
+
+
+   # EL SIGUIENTE PAR DE TESTS ESTÁ PENSADO PARA COMPROBAR
+   # LAS 2 EXCEPCIONES QUE DEVOLVERÍA LA SUBRUTINA validate_date_signature()
 
 
     def test6_vaccine_patient_signature_string(self):
         """
 
-        DOCSTRING
+        Test que falla al recibir hash que no se encuentra en el tipo String
 
         """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
@@ -219,16 +212,9 @@ class MyTestCase(unittest.TestCase):
 
         my_request = VaccineManager()
 
-        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
+        my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                                                     "Regular", "Jose Johnson", "923412921", "45")
-        value = my_request.get_vaccine_date(file_test)
-
-        try:
-            with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
-                data_list = json.load(file)
-
-        except FileNotFoundError:
-            data_list = []
+        my_request.get_vaccine_date(file_test)
 
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.vaccine_patient(123456789239239868573)
@@ -238,7 +224,7 @@ class MyTestCase(unittest.TestCase):
     def test7_vaccine_patient_signature_not64(self):
         """
 
-        DOCSTRING
+        Test que falla al recibir un hash que no cumple con la longitud de 64 bytes
 
         """
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
@@ -256,16 +242,9 @@ class MyTestCase(unittest.TestCase):
 
         my_request = VaccineManager()
 
-        this_id = my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
+        my_request.request_vaccination_id("bb5dbd6f-d8b4-413f-8eb9-dd262cfc54e0",
                                                     "Regular", "Jose Johnson", "923412921", "45")
-        value = my_request.get_vaccine_date(file_test)
-
-        try:
-            with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
-                data_list = json.load(file)
-
-        except FileNotFoundError:
-            data_list = []
+        my_request.get_vaccine_date(file_test)
 
         with self.assertRaises(VaccineManagementException) as c_m:
             my_request.vaccine_patient(r"d43e7acb172233131de254")

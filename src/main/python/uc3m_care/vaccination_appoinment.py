@@ -131,4 +131,3 @@ class VaccinationAppoinment():
 
         """
         return self.__date_signature
-

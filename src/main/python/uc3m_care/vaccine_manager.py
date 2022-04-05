@@ -10,9 +10,9 @@ Module for the management of the vaccination process
 """
 import re
 import json
-from freezegun import freeze_time
 from datetime import datetime
 from pathlib import Path
+from freezegun import freeze_time
 from .vaccine_management_exception import VaccineManagementException
 from .vaccine_patient_register import VaccinePatientRegister
 from .vaccination_appoinment import VaccinationAppoinment
@@ -251,7 +251,7 @@ class VaccineManager:
         return new_date.vaccination_signature
 
 
-    @freeze_time("2022-06-16")
+    @freeze_time("2022-06-16") # Congelamos el tiempo para poder realizar los tests
     def vaccine_patient(self, date_signature, date_for_test=None):
         """
 
