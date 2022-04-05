@@ -261,8 +261,16 @@ class VaccineManager:
         json_path = str(Path.home()) + "/PycharmProjects/G80.2022.T10.EG3/src/JsonFiles/"
         file_store_date = json_path + "store_patient_date.json"
 
-        # We check if there are any file errors
+        # If signature is valid and exists in store_patient_date we check if it already exists in store_vaccine_patient
+        try:
+            with open(str(json_path)+"store_vaccine_patient.json", 'r', encoding='utf-8', newline="") as file:
+                vaccine_patients = json.load(file)[0]
+                if vaccine_patients[date_signature]:
+                    raise VaccineManagementException("Error: Patient has already been vaccinated")
+        except FileNotFoundError:
+            pass
 
+        # We check if there are any file errors
         try:
             with open(file_store_date, 'r', encoding="utf-8", newline="") as file:
                 data_list = json.load(file)
@@ -274,7 +282,6 @@ class VaccineManager:
             raise VaccineManagementException("JSON Decode Error - Wrong JSON Format")
 
         # Now we traverse the JSON file searching for the date_signature
-
         date_founded = False
         for item in data_list:
             if item["_VaccinationAppoinment__date_signature"] == date_signature:
@@ -284,17 +291,11 @@ class VaccineManager:
             raise VaccineManagementException("Error: date_signature doesn't exist in the system")
 
         # If we found date_signature in the JSON file the we need to check if the vaccination date is today
-
         actual_date = datetime.timestamp(datetime.utcnow())
-        # print(appointment_date)
-        # print(actual_date)
-        print(actual_date)
-        print(appointment_date)
         if actual_date != appointment_date:
             raise VaccineManagementException("Error: actual date doesn't match with the issued vaccination date")
 
         # At this point, if the issued_date is equal to actual_date, the system creates a new store with the vaccination data
-
         try:
             with open(str(json_path+"store_vaccine_patient.json"), "w", encoding="utf-8", newline="") as file:
                 json.dump([{str(date_signature): actual_date}], file, indent=2)
